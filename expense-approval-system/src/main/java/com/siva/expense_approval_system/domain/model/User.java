@@ -27,7 +27,7 @@ public class User {
      private Tenant tenant;
     
      @Column(nullable = false)
-     private String name;
+     private String Name;
      
      @NotBlank
      @Column(nullable = false)
@@ -47,11 +47,11 @@ public class User {
 
      }
 
-     public User(Long id, Tenant tenant, String name, @NotBlank String email, @NotBlank String password, UserRole role,
+     public User(Long id, Tenant tenant, String Name, @NotBlank String email, @NotBlank String password, UserRole role,
             LocalDateTime createdAt) {
         this.id = id;
         this.tenant = tenant;
-        this.name = name;
+        this.Name = Name;
         this.email = email;
         this.password = password;
         this.role = role;
@@ -75,11 +75,11 @@ public class User {
      }
 
      public String getName() {
-         return name;
+         return Name;
      }
 
      public void setName(String name) {
-         this.name = name;
+         this.Name = name;
      }
 
      public String getEmail() {
