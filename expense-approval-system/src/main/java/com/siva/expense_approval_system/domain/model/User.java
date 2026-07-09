@@ -78,8 +78,8 @@ public class User {
          return Name;
      }
 
-     public void setName(String name) {
-         this.Name = name;
+     public void setName(String Name) {
+         this.Name = Name;
      }
 
      public String getEmail() {
