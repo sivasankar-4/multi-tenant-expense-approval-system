@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "Tenant")
+@Table(name = "Tenants")
 public class Tenant{
         
      @Id
@@ -54,6 +54,11 @@ public class Tenant{
      public void setcreated_At(LocalDateTime created_at){
       this.created_at = created_at;
      }
+
+   //   public void setCreatedAt(LocalDateTime now) {
+   //      // TODO Auto-generated method stub
+   //      throw new UnsupportedOperationException("Unimplemented method 'setCreatedAt'");
+   //   }
 
 
 

@@ -18,7 +18,7 @@ import jakarta.validation.constraints.NotNull;
 
 @Entity
 
-@Table(name ="expense")
+@Table(name ="expenses")
 
 public class Expense {
     
