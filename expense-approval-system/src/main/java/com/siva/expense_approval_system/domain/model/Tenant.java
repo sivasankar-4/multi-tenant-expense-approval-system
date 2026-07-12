@@ -3,9 +3,11 @@ package com.siva.expense_approval_system.domain.model;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.*;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "Tenants")
+@NoArgsConstructor
 public class Tenant{
         
      @Id
@@ -16,21 +18,17 @@ public class Tenant{
      private String name;
      
      @Column(name = "created_at" ,nullable = false)
-     private LocalDateTime created_at;
+     private LocalDateTime createdAt;
 
-   
-     public Tenant(){
-
-     }
       
-     public Tenant(Long Id,String name,LocalDateTime created_at){
+     public Tenant(Long Id,String name,LocalDateTime createdAt){
          
           this.Id = Id;
           this.name = name;
-          this.created_at = created_at;
+          this.createdAt = createdAt;
      }
 
-     public Long Id(){
+     public Long getId(){
         return Id;
      }
 
@@ -38,7 +36,7 @@ public class Tenant{
       this.Id = Id;
      }
 
-     public String name(){
+     public String getName(){
         return name;
 
      }
@@ -48,18 +46,12 @@ public class Tenant{
      }
 
      public LocalDateTime created_at(){
-        return created_at;
+        return createdAt;
      }
 
-     public void setcreated_At(LocalDateTime created_at){
-      this.created_at = created_at;
+     public void setcreated_At(LocalDateTime createdAt){
+      this.createdAt = createdAt;
      }
-
-   //   public void setCreatedAt(LocalDateTime now) {
-   //      // TODO Auto-generated method stub
-   //      throw new UnsupportedOperationException("Unimplemented method 'setCreatedAt'");
-   //   }
-
 
 
 }

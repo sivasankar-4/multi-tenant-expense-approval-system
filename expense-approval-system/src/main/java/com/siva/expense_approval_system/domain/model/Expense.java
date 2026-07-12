@@ -15,11 +15,12 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.NoArgsConstructor;
 
 @Entity
 
 @Table(name ="expenses")
-
+@NoArgsConstructor
 public class Expense {
     
     @Id
@@ -59,10 +60,7 @@ public class Expense {
                                 
     @Column(name = "created_at", nullable = false)                                    
     private LocalDateTime createdAt;                
-                                 
-    public Expense(){                                 
-                 
-    }             
+       
 
     public Expense(Long id ,Tenant tenant, User submittedBy, @NotNull BigDecimal amount, @NotBlank String currency,
             @NotBlank String category, String description, ExpenseStatus status, Integer currentApprovalStep,

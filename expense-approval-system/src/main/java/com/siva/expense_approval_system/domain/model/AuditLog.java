@@ -10,9 +10,11 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "audit_log")
+@NoArgsConstructor
 public class AuditLog {
 
     @Id
@@ -40,13 +42,6 @@ public class AuditLog {
     
     @Column(name ="created_at",nullable = false)
     private LocalDateTime createdAt;
-
-
-
-    public AuditLog(){
-
-    }
-
 
 
     public AuditLog(Long id, Tenant tenant, Long actorId, String actionType, String entityType, Long entityId,

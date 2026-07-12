@@ -13,9 +13,11 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "users")
+@NoArgsConstructor
 public class User {
     
      @Id
@@ -43,9 +45,7 @@ public class User {
      @Column(name = "created_at",nullable = false)
      private LocalDateTime createdAt;
      
-     public User(){
 
-     }
 
      public User(Long id, Tenant tenant, String Name, @NotBlank String email, @NotBlank String password, UserRole role,
             LocalDateTime createdAt) {

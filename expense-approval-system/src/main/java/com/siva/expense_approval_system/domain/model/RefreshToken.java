@@ -10,9 +10,11 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "Refresh_token")
+@NoArgsConstructor
 public class RefreshToken {
     
 
@@ -38,9 +40,7 @@ public class RefreshToken {
     private LocalDateTime created_At;
 
 
-    public RefreshToken(){
 
-    }
 
 
     public RefreshToken(Long id, User user, String tokenHash, LocalDateTime expiredAt, Boolean revoked,

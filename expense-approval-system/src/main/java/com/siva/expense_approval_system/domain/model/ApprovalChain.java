@@ -2,11 +2,13 @@ package com.siva.expense_approval_system.domain.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 
 @Entity
 @Table(name = "approval_chains")
+@NoArgsConstructor
 public class ApprovalChain {
 
     @Id

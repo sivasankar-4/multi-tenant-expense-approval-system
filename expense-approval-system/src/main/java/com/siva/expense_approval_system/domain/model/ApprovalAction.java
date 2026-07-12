@@ -12,9 +12,11 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "ApprovalAction")
+@NoArgsConstructor
 public class ApprovalAction {
     
 
@@ -38,12 +40,6 @@ public class ApprovalAction {
     
     @Column(name = "acted_at",nullable = false)
     private LocalDateTime actedAt;
-
-
-    public ApprovalAction(){
-
-    }
-
 
     public ApprovalAction(Long id, Expense expense, User approver, ApprovalActionStatus action, String comment,
             LocalDateTime actedAt) {
