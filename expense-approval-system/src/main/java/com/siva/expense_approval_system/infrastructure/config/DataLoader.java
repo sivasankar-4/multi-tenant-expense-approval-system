@@ -1,39 +1,42 @@
 package com.siva.expense_approval_system.infrastructure.config;
 
-
 import java.time.LocalDateTime;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import com.siva.expense_approval_system.application.service.TenantService;
+import com.siva.expense_approval_system.application.service.UserService;
 import com.siva.expense_approval_system.domain.model.Tenant;
-import com.siva.expense_approval_system.domain.repository.ExpenseRepository;
-import com.siva.expense_approval_system.domain.repository.TenantRepository;
-import com.siva.expense_approval_system.domain.repository.UserRepository;
+import com.siva.expense_approval_system.domain.model.User;
+import com.siva.expense_approval_system.domain.model.UserRole;
 
 @Component
-public class DataLoader implements CommandLineRunner{
+public class DataLoader implements CommandLineRunner {
 
-    //private final UserRepository userRepository;
-     private final TenantRepository tenantRepository;
-    // private final ExpenseRepository expenseRepository;
+    private final TenantService tenantService;
+    private final UserService userService;
 
-    
-    
-     public DataLoader(UserRepository userRepository, TenantRepository tenantRepository,
-            ExpenseRepository expenseRepository) {
-        // this.userRepository = userRepository;
-         this.tenantRepository = tenantRepository;
-        // this.expenseRepository = expenseRepository;
+    public DataLoader(TenantService tenantService, UserService userService) {
+        this.tenantService = tenantService;
+        this.userService = userService;
     }
-     public void run(String... args) throws Exception{
 
+    @Override
+    public void run(String... args) {
+        Tenant tenant = new Tenant(null, "TechCorp", LocalDateTime.now());
+        Tenant savedTenant = tenantService.createTenant(tenant);
 
-        Tenant tenant = new Tenant();
+        User user = new User(
+                null,
+                savedTenant,
+                "Siva Sankar",
+                "siva@techcorp.com",
+                "change-me-before-production",
+                UserRole.ADMIN,
+                LocalDateTime.now());
+        userService.createUser(user);
 
-        tenant.setName("TechCorp");
-        tenant.setcreated_At(LocalDateTime.now());
-        tenantRepository.save(tenant);
-        System.out.println("Application start successfully");
-     }
+        System.out.println("Sample tenant and user created successfully.");
+    }
 }

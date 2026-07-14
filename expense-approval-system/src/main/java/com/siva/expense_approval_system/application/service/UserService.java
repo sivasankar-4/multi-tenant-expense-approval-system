@@ -2,18 +2,20 @@ package com.siva.expense_approval_system.application.service;
 
 import java.util.List;
 
+import org.springframework.lang.NonNull;
+
 import com.siva.expense_approval_system.domain.model.User;
 
 public interface UserService {
    
-    User createUser(User user);
+    User createUser(@NonNull User user);
 
-    User getUserById(Long id);
+    User getUserById(@NonNull Long id);
 
     List<User> getAllUsers();
 
-    User updateUser(Long id , User user);
+    User updateUser(@NonNull Long id, @NonNull User user);
 
-    void deleteUser(Long id);
+    void deleteUser(@NonNull Long id);
     
 } 
