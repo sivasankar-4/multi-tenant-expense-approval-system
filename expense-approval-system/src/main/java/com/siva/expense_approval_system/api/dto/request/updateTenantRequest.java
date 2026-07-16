@@ -2,7 +2,7 @@ package com.siva.expense_approval_system.api.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 
-public class updateTenantRequest {
+public class UpdateTenantRequest {
     
     @NotBlank(message = "Name is required")
      private String name;

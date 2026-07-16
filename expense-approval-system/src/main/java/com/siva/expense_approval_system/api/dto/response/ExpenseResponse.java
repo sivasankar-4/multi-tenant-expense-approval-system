@@ -1,5 +1,6 @@
 package com.siva.expense_approval_system.api.dto.response;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 public class ExpenseResponse {
@@ -9,7 +10,7 @@ public class ExpenseResponse {
 
      private String submittedBy;
 
-     private String amount;
+     private BigDecimal amount;
 
      private String description;
 
@@ -35,11 +36,11 @@ public class ExpenseResponse {
          this.submittedBy = submittedBy;
      }
 
-     public String getAmount() {
+     public BigDecimal getAmount() {
          return amount;
      }
 
-     public void setAmount(String amount) {
+     public void setAmount(BigDecimal amount) {
          this.amount = amount;
      }
 

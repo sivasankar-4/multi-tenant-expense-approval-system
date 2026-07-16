@@ -3,7 +3,7 @@ package com.siva.expense_approval_system.api.dto.request;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-public class createUserRequest {
+public class CreateUserRequest {
     
     
     @NotNull

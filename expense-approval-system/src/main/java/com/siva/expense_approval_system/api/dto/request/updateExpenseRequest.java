@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
 
-public class updateExpenseRequest {
+public class UpdateExpenseRequest {
      
      
     @Positive(message ="amount must be greater than zero")

@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
-public class createExpenseRequest{
+public class CreateExpenseRequest{
      
      @NotNull(message ="tenant id is required")
     private Long tenantId;
