@@ -1,5 +1,9 @@
 package com.siva.expense_approval_system.api.mapper;
 
+import java.time.LocalDateTime;
+
+import org.springframework.stereotype.Component;
+
 import com.siva.expense_approval_system.api.dto.request.CreateUserRequest;
 import com.siva.expense_approval_system.api.dto.request.UpdateUserRequest;
 import com.siva.expense_approval_system.api.dto.response.UserResponse;
@@ -7,6 +11,7 @@ import com.siva.expense_approval_system.domain.model.Tenant;
 import com.siva.expense_approval_system.domain.model.User;
 import com.siva.expense_approval_system.domain.model.UserRole;
 
+@Component
 public class UserMapper {
 
      public User toEntityMapping(CreateUserRequest request ,Tenant tenant){
@@ -20,6 +25,7 @@ public class UserMapper {
          if(request.getRole() != null){
              user.setRole(UserRole.valueOf(request.getRole()));
          }
+         user.setCreatedAt(LocalDateTime.now());
 
          return user;
      }

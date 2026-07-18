@@ -1,13 +1,16 @@
 package com.siva.expense_approval_system.api.dto.request;
 
+import jakarta.annotation.Generated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 public class CreateUserRequest {
-    
-    
+
     @NotNull
-    private Long id;
+    private Long tenantId;
     
     @NotBlank(message =  "name is required")
     private String name;
@@ -20,13 +23,13 @@ public class CreateUserRequest {
     
     @NotBlank(message = "role is required")
     private String role;
-    
-    public Long getId() {
-        return id;
+
+    public Long getTenantId() {
+        return tenantId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setTenantId(Long tenantId) {
+        this.tenantId = tenantId;
     }
 
     public String getName() {
@@ -60,7 +63,6 @@ public class CreateUserRequest {
     public void setRole(String role) {
         this.role = role;
     }
-
 
     
 }
