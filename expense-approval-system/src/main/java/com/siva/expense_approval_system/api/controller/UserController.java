@@ -101,6 +101,7 @@ public class UserController {
      public ResponseEntity<UserResponse> updateUser(@PathVariable Long id,@Valid @RequestBody UpdateUserRequest request){
 
          User user = userService.getUserById(id);
+         
          userMapper.updateEntity(request, user);
 
         User updatedUser = userService.updateUser(id, user);

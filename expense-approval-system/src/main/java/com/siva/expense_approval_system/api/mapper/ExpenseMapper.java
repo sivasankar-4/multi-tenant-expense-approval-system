@@ -1,12 +1,18 @@
 package com.siva.expense_approval_system.api.mapper;
 
+import java.time.LocalDateTime;
+
+import org.springframework.stereotype.Component;
+
 import com.siva.expense_approval_system.api.dto.request.CreateExpenseRequest;
 import com.siva.expense_approval_system.api.dto.request.UpdateExpenseRequest;
 import com.siva.expense_approval_system.api.dto.response.ExpenseResponse;
 import com.siva.expense_approval_system.domain.model.Expense;
+import com.siva.expense_approval_system.domain.model.ExpenseStatus;
 import com.siva.expense_approval_system.domain.model.Tenant;
 import com.siva.expense_approval_system.domain.model.User;
 
+@Component
 public class ExpenseMapper {
     
 
@@ -17,7 +23,12 @@ public class ExpenseMapper {
          expense.setTenant(tenant);
          expense.setSubmittedBy(submittedBy);
          expense.setAmount(request.getAmount());
+         expense.setCurrency(request.getCurrency());
+         expense.setCategory(request.getCategory());
          expense.setDescription(request.getDescription());
+         expense.setStatus(ExpenseStatus.PENDING);
+         expense.setCurrentApprovalStep(1);
+         expense.setCreatedAt(LocalDateTime.now());
 
          return expense;
 

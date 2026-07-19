@@ -23,7 +23,11 @@ public class UserMapper {
          user.setEmail(request.getEmail());
          user.setPassword(request.getPassword());
          if(request.getRole() != null){
-             user.setRole(UserRole.valueOf(request.getRole()));
+             try {
+                 user.setRole(UserRole.valueOf(request.getRole()));
+             } catch (IllegalArgumentException ex) {
+                 throw new IllegalArgumentException("Invalid role: " + request.getRole());
+             }
          }
          user.setCreatedAt(LocalDateTime.now());
 
@@ -34,15 +38,18 @@ public class UserMapper {
 
          user.setName(request.getName());
          user.setEmail(request.getEmail());
-          if(request.getRole() != null){
-             user.setRole(UserRole.valueOf(request.getRole()));
+         if(request.getRole() != null){
+             try {
+                 user.setRole(UserRole.valueOf(request.getRole()));
+             } catch (IllegalArgumentException ex) {
+                 throw new IllegalArgumentException("Invalid role: " + request.getRole());
+             }
          }
      }
 
      public UserResponse toResponse(User user){
 
         UserResponse response = new UserResponse();
-
 
         response.setId(user.getId());
         response.setName(user.getName());
