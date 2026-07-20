@@ -53,7 +53,7 @@ public class ExpenseController {
 
         Expense expense = expenseMapper.toEntity(request, tenant, user);
 
-        Expense savedExpense = expenseService.createExpense(expense);
+        Expense savedExpense = expenseService.submitExpense(expense);
 
         ExpenseResponse response = expenseMapper.toResponse(savedExpense);
 
@@ -94,6 +94,18 @@ public class ExpenseController {
 
         return ResponseEntity.ok(response);
          
+      }
+
+      @PutMapping("/{id}/approve")
+      public ResponseEntity<ExpenseResponse> approveExpense(@PathVariable Long id) {
+        Expense approvedExpense = expenseService.ApproveExpense(expenseService.getExpenseById(id));
+        return ResponseEntity.ok(expenseMapper.toResponse(approvedExpense));
+      }
+
+      @PutMapping("/{id}/reject")
+      public ResponseEntity<ExpenseResponse> rejectExpense(@PathVariable Long id) {
+        Expense rejectedExpense = expenseService.ApproveReject(expenseService.getExpenseById(id));
+        return ResponseEntity.ok(expenseMapper.toResponse(rejectedExpense));
       }
     
       @DeleteMapping("/{id}")

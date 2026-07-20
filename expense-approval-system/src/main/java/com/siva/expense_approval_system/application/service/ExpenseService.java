@@ -9,6 +9,10 @@ public interface ExpenseService {
     
     Expense createExpense(Expense expense);
 
+    Expense submitExpense(Expense expense);
+    Expense ApproveExpense(Expense expense);
+    Expense ApproveReject(Expense expense);
+
     Expense getExpenseById(Long id);
 
     List<Expense> getAllExpenses();
