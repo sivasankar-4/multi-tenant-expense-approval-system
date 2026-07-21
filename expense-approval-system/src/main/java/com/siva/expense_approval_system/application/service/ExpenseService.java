@@ -11,7 +11,7 @@ public interface ExpenseService {
 
     Expense submitExpense(Expense expense);
     Expense ApproveExpense(Expense expense);
-    Expense ApproveReject(Expense expense);
+    Expense RejectExpense(Expense expense);
 
     Expense getExpenseById(Long id);
 

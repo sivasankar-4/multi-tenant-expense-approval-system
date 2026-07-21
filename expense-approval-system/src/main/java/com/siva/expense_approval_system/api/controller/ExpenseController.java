@@ -103,8 +103,8 @@ public class ExpenseController {
       }
 
       @PutMapping("/{id}/reject")
-      public ResponseEntity<ExpenseResponse> rejectExpense(@PathVariable Long id) {
-        Expense rejectedExpense = expenseService.ApproveReject(expenseService.getExpenseById(id));
+      public ResponseEntity<ExpenseResponse> RejectExpense(@PathVariable Long id) {
+        Expense rejectedExpense = expenseService.RejectExpense(expenseService.getExpenseById(id));
         return ResponseEntity.ok(expenseMapper.toResponse(rejectedExpense));
       }
     

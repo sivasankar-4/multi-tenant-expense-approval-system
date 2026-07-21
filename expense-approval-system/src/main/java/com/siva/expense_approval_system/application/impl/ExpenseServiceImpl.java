@@ -81,7 +81,7 @@ public class ExpenseServiceImpl implements ExpenseService{
      }
 
      @Override
-     public Expense ApproveReject(Expense expense) {
+     public Expense RejectExpense(Expense expense) {
         validatePendingExpense(expense);
         expense.setStatus(ExpenseStatus.REJECTED);
         return expenseRepository.save(expense);
