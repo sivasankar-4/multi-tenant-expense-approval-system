@@ -13,6 +13,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.NoArgsConstructor;
 
 @Entity
@@ -39,7 +40,9 @@ public class User {
      @Column(nullable = false)
      private String password;
        
+     @NotNull
      @Enumerated(EnumType.STRING)
+     @Column(name = "role", nullable = false, length = 20, columnDefinition = "varchar(20)")
      private UserRole role;
       
      @Column(name = "created_at",nullable = false)

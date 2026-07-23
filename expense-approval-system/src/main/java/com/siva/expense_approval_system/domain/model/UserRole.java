@@ -1,7 +1,7 @@
 package com.siva.expense_approval_system.domain.model;
 
 public enum UserRole {
-    ADMIN,
+    FINANCE_ADMIN,
     MANAGER,
     EMPLOYEE
 }

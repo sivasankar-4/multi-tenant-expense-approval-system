@@ -10,7 +10,7 @@ public interface ApprovalChainService {
 
     ApprovalChain getApprovalChainById(Long id);
 
-    List<ApprovalChain> getAllApprovalChains();
+    List<ApprovalChain>getAllApprovalChains();
 
     ApprovalChain updateApprovalChain(Long id, ApprovalChain approvalChain);
 

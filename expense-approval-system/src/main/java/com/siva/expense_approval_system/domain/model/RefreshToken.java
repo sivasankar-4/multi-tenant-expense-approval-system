@@ -20,9 +20,8 @@ public class RefreshToken {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
     private Long Id;
-   
+    
     @ManyToOne
     @JoinColumn(name ="user_id",nullable = false)
     private User user;
