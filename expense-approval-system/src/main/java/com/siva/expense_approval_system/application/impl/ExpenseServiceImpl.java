@@ -1,8 +1,11 @@
 package com.siva.expense_approval_system.application.impl;
 
 import java.math.BigDecimal;
+import java.util.Comparator;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.siva.expense_approval_system.application.service.ExpenseService;
@@ -14,7 +17,8 @@ import com.siva.expense_approval_system.domain.repository.ExpenseRepository;
 
 @Service
 public class ExpenseServiceImpl implements ExpenseService{
-    
+
+    private static final Logger log = LoggerFactory.getLogger(ExpenseServiceImpl.class);
 
      private final ExpenseRepository expenseRepository;
 
@@ -39,19 +43,22 @@ public class ExpenseServiceImpl implements ExpenseService{
       if(expense.getDescription() == null || expense.getDescription().trim().isEmpty()){
          throw new IllegalArgumentException("Description Cannot be Empty");
       }
-       List<ApprovalChain> approvalChain =
-          approvalChainRepository.findByTenantAndMinAmountLessThanEqualAndMaxAmountGreaterThanEqualOrderByStepOrderAsc(
-                        expense.getTenant(),
-                        expense.getAmount(),
-                        expense.getAmount()
-                );
+       List<ApprovalChain> approvalChains = getApprovalChains(expense);
 
-      if (approvalChain.isEmpty()) {
-        throw new IllegalArgumentException("No approval chain configured for this expense.");
-      }
+      ApprovalChain initialChain = approvalChains.stream()
+              .min(Comparator.comparingInt(ApprovalChain::getStepOrder))
+              .orElseThrow(() -> new IllegalArgumentException("No approval chain configured for this expense."));
+
+      log.debug("submitExpense amount={}, tenantId={}, approvalChains={}, initialStep={}",
+              expense.getAmount(),
+              expense.getTenant() != null ? expense.getTenant().getId() : null,
+              approvalChains.stream()
+                      .map(chain -> "step=" + chain.getStepOrder() + ",min=" + chain.getMinAmount() + ",max=" + chain.getMaxAmount())
+                      .toList(),
+              initialChain.getStepOrder());
 
       expense.setStatus(ExpenseStatus.PENDING);
-      expense.setCurrentApprovalStep(approvalChain.get(0).getStepOrder());
+      expense.setCurrentApprovalStep(initialChain.getStepOrder());
       return expenseRepository.save(expense);
      }
 
@@ -59,7 +66,18 @@ public class ExpenseServiceImpl implements ExpenseService{
      public Expense ApproveExpense(Expense expense) {
         validatePendingExpense(expense);
 
+        // Fetch ALL approval chains for this tenant ordered by step so the workflow advances
+        // through the configured chain rather than skipping the first approval step.
         List<ApprovalChain> approvalChains = getApprovalChains(expense);
+
+        log.debug("approveExpense expenseId={}, tenantId={}, currentApprovalStep={}, approvalChains={}",
+                expense.getId(),
+                expense.getTenant() != null ? expense.getTenant().getId() : null,
+                expense.getCurrentApprovalStep(),
+                approvalChains.stream()
+                        .map(chain -> "step=" + chain.getStepOrder() + ",min=" + chain.getMinAmount() + ",max=" + chain.getMaxAmount())
+                        .toList());
+
         ApprovalChain currentChain = approvalChains.stream()
                 .filter(chain -> chain.getStepOrder().equals(expense.getCurrentApprovalStep()))
                 .findFirst()
@@ -70,6 +88,9 @@ public class ExpenseServiceImpl implements ExpenseService{
                 .filter(chain -> chain.getStepOrder() > currentChain.getStepOrder())
                 .findFirst()
                 .orElse(null);
+
+        log.debug("approveExpense currentChainStep={}, nextChainStep={}"
+                , currentChain.getStepOrder(), nextChain != null ? nextChain.getStepOrder() : null);
 
         if (nextChain == null) {
             expense.setStatus(ExpenseStatus.APPROVED);
@@ -119,8 +140,7 @@ public class ExpenseServiceImpl implements ExpenseService{
 
      private List<ApprovalChain> getApprovalChains(Expense expense) {
         List<ApprovalChain> approvalChains =
-                approvalChainRepository.findByTenantAndMinAmountLessThanEqualAndMaxAmountGreaterThanEqualOrderByStepOrderAsc(
-                        expense.getTenant(), expense.getAmount(), expense.getAmount());
+                approvalChainRepository.findByTenantOrderByStepOrderAsc(expense.getTenant());
 
         if (approvalChains.isEmpty()) {
             throw new IllegalArgumentException("No approval chain configured for this expense.");
@@ -128,7 +148,8 @@ public class ExpenseServiceImpl implements ExpenseService{
 
         return approvalChains;
      }
-
+     
+     //if the expense is already approved or rejected it throws an error it is used to check the expense is approved or rejected
      private void validatePendingExpense(Expense expense) {
         if (expense.getStatus() != ExpenseStatus.PENDING) {
             throw new IllegalArgumentException("Only pending expenses can be approved or rejected.");
