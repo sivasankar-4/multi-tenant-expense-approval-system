@@ -65,9 +65,9 @@ public class ExpenseServiceImpl implements ExpenseService{
      @Override
      public Expense ApproveExpense(Expense expense) {
         validatePendingExpense(expense);
+       
 
-        // Fetch ALL approval chains for this tenant ordered by step so the workflow advances
-        // through the configured chain rather than skipping the first approval step.
+        //this loads the configured approval chain for the expenses tenant
         List<ApprovalChain> approvalChains = getApprovalChains(expense);
 
         log.debug("approveExpense expenseId={}, tenantId={}, currentApprovalStep={}, approvalChains={}",
@@ -77,13 +77,15 @@ public class ExpenseServiceImpl implements ExpenseService{
                 approvalChains.stream()
                         .map(chain -> "step=" + chain.getStepOrder() + ",min=" + chain.getMinAmount() + ",max=" + chain.getMaxAmount())
                         .toList());
-
+       
+         // it finds where the expense currently is it simplt finds the current chain
         ApprovalChain currentChain = approvalChains.stream()
                 .filter(chain -> chain.getStepOrder().equals(expense.getCurrentApprovalStep()))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException(
                         "No approval chain is configured for step " + expense.getCurrentApprovalStep() + "."));
-
+       //it asks is there any step greater than 1 if it is step2 finance
+        //so nextchain = step2
         ApprovalChain nextChain = approvalChains.stream()
                 .filter(chain -> chain.getStepOrder() > currentChain.getStepOrder())
                 .findFirst()
@@ -91,8 +93,9 @@ public class ExpenseServiceImpl implements ExpenseService{
 
         log.debug("approveExpense currentChainStep={}, nextChainStep={}"
                 , currentChain.getStepOrder(), nextChain != null ? nextChain.getStepOrder() : null);
-
-        if (nextChain == null) {
+        
+         // then it tells if the nextchain == null then it shows as approved if it is not null then goes to the next step
+        if (nextChain == null) { //if finish workflow it set as null and status as approved
             expense.setStatus(ExpenseStatus.APPROVED);
         } else {
             expense.setCurrentApprovalStep(nextChain.getStepOrder());
