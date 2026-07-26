@@ -1,4 +1,4 @@
-package com.siva.expense_approval_system.domain.model;
+package com.siva.expense_approval_system.domain.enums;
 
 
 public enum Role {

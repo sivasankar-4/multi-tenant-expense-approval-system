@@ -2,6 +2,9 @@ package com.siva.expense_approval_system.domain.model;
 
 import java.time.LocalDateTime;
 
+import com.siva.expense_approval_system.domain.enums.UserRole;
+
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;

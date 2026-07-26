@@ -15,9 +15,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import com.siva.expense_approval_system.domain.enums.ExpenseStatus;
 import com.siva.expense_approval_system.domain.model.ApprovalChain;
 import com.siva.expense_approval_system.domain.model.Expense;
-import com.siva.expense_approval_system.domain.model.ExpenseStatus;
 import com.siva.expense_approval_system.domain.model.Tenant;
 import com.siva.expense_approval_system.domain.model.User;
 import com.siva.expense_approval_system.domain.repository.ApprovalChainRepository;

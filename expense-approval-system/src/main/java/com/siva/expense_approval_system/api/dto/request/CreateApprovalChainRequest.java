@@ -2,7 +2,7 @@ package com.siva.expense_approval_system.api.dto.request;
 
 import java.math.BigDecimal;
 
-import com.siva.expense_approval_system.domain.model.Role;
+import com.siva.expense_approval_system.domain.enums.Role;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;

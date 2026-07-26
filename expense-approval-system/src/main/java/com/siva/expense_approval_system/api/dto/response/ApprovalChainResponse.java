@@ -2,7 +2,7 @@ package com.siva.expense_approval_system.api.dto.response;
 
 import java.math.BigDecimal;
 
-import com.siva.expense_approval_system.domain.model.Role;
+import com.siva.expense_approval_system.domain.enums.Role;
 
 public class ApprovalChainResponse {
 

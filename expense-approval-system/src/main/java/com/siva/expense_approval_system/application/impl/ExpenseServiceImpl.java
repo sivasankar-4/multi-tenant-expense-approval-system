@@ -9,9 +9,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.siva.expense_approval_system.application.service.ExpenseService;
+import com.siva.expense_approval_system.domain.enums.ExpenseStatus;
 import com.siva.expense_approval_system.domain.model.ApprovalChain;
 import com.siva.expense_approval_system.domain.model.Expense;
-import com.siva.expense_approval_system.domain.model.ExpenseStatus;
 import com.siva.expense_approval_system.domain.repository.ApprovalChainRepository;
 import com.siva.expense_approval_system.domain.repository.ExpenseRepository;
 

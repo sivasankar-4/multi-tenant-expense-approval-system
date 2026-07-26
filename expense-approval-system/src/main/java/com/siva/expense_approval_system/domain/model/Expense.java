@@ -1,6 +1,8 @@
 package com.siva.expense_approval_system.domain.model;
 
 import java.math.BigDecimal;
+
+import com.siva.expense_approval_system.domain.enums.ExpenseStatus;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
@@ -157,6 +159,5 @@ public class Expense {
         this.createdAt = createdAt;
     }
 
-    
-
 }
+

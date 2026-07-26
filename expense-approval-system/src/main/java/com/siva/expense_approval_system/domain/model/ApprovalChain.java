@@ -1,5 +1,7 @@
 package com.siva.expense_approval_system.domain.model;
 
+import com.siva.expense_approval_system.domain.enums.Role;
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.NoArgsConstructor;

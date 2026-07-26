@@ -7,8 +7,8 @@ import org.springframework.stereotype.Component;
 import com.siva.expense_approval_system.api.dto.request.CreateExpenseRequest;
 import com.siva.expense_approval_system.api.dto.request.UpdateExpenseRequest;
 import com.siva.expense_approval_system.api.dto.response.ExpenseResponse;
+import com.siva.expense_approval_system.domain.enums.ExpenseStatus;
 import com.siva.expense_approval_system.domain.model.Expense;
-import com.siva.expense_approval_system.domain.model.ExpenseStatus;
 import com.siva.expense_approval_system.domain.model.Tenant;
 import com.siva.expense_approval_system.domain.model.User;
 

@@ -7,9 +7,9 @@ import org.springframework.stereotype.Component;
 import com.siva.expense_approval_system.api.dto.request.CreateUserRequest;
 import com.siva.expense_approval_system.api.dto.request.UpdateUserRequest;
 import com.siva.expense_approval_system.api.dto.response.UserResponse;
+import com.siva.expense_approval_system.domain.enums.UserRole;
 import com.siva.expense_approval_system.domain.model.Tenant;
 import com.siva.expense_approval_system.domain.model.User;
-import com.siva.expense_approval_system.domain.model.UserRole;
 
 @Component
 public class UserMapper {
