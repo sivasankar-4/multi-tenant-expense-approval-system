@@ -33,7 +33,7 @@ public class User {
      private Tenant tenant;
     
      @Column(nullable = false)
-     private String Name;
+     private String name;
      
      @NotBlank
      @Column(nullable = false)
@@ -53,11 +53,11 @@ public class User {
      
 
 
-     public User(Long id, Tenant tenant, String Name, @NotBlank String email, @NotBlank String password, UserRole role,
+     public User(Long id, Tenant tenant, String name, @NotBlank String email, @NotBlank String password, UserRole role,
             LocalDateTime createdAt) {
         this.id = id;
         this.tenant = tenant;
-        this.Name = Name;
+        this.name = name;
         this.email = email;
         this.password = password;
         this.role = role;
@@ -81,11 +81,11 @@ public class User {
      }
 
      public String getName() {
-         return Name;
+         return name;
      }
 
      public void setName(String Name) {
-         this.Name = Name;
+         this.name = Name;
      }
 
      public String getEmail() {
