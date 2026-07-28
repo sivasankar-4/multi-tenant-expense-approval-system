@@ -1,7 +1,11 @@
 package com.siva.expense_approval_system.api.dto.request;
 
+import com.siva.expense_approval_system.domain.enums.UserRole;
+
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 public class CreateUserRequest {
 
@@ -11,14 +15,16 @@ public class CreateUserRequest {
     @NotBlank(message =  "name is required")
     private String name;
     
-    @NotBlank(message = "email is required")
+    @NotBlank
+    @Email(message = "email is required")
     private String email;
     
     @NotBlank(message = "password is required")
+    @Size(min = 8, message = "Password must contain at least 8 Characters")
     private String password;
     
     @NotBlank(message = "role is required")
-    private String role;
+    private UserRole role;
 
     public Long getTenantId() {
         return tenantId;
