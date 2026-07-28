@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 import com.siva.expense_approval_system.api.dto.request.CreateUserRequest;
 import com.siva.expense_approval_system.api.dto.request.UpdateUserRequest;
 import com.siva.expense_approval_system.api.dto.response.UserResponse;
-import com.siva.expense_approval_system.domain.enums.UserRole;
 import com.siva.expense_approval_system.domain.model.Tenant;
 import com.siva.expense_approval_system.domain.model.User;
 
@@ -23,11 +22,7 @@ public class UserMapper {
          user.setEmail(request.getEmail());
          user.setPassword(request.getPassword());
          if(request.getRole() != null){
-             try {
-                 user.setRole(UserRole.valueOf(request.getRole()));
-             } catch (IllegalArgumentException ex) {
-                 throw new IllegalArgumentException("Invalid role: " + request.getRole());
-             }
+             user.setRole(request.getRole());
          }
          user.setCreatedAt(LocalDateTime.now());
 
@@ -39,11 +34,7 @@ public class UserMapper {
          user.setName(request.getName());
          user.setEmail(request.getEmail());
          if(request.getRole() != null){
-             try {
-                 user.setRole(UserRole.valueOf(request.getRole()));
-             } catch (IllegalArgumentException ex) {
-                 throw new IllegalArgumentException("Invalid role: " + request.getRole());
-             }
+             user.setRole(request.getRole());
          }
      }
 

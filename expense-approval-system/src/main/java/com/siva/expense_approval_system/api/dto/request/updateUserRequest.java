@@ -1,7 +1,10 @@
 package com.siva.expense_approval_system.api.dto.request;
 
+import com.siva.expense_approval_system.domain.enums.UserRole;
+
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 public class UpdateUserRequest {
     
@@ -12,8 +15,8 @@ public class UpdateUserRequest {
      @NotBlank(message = "email is required")
      private String email;
      
-     @NotBlank(message ="role is required")
-     private String role;
+     @NotNull(message ="role is required")
+     private UserRole role;
 
      public String getName() {
          return name;
@@ -31,11 +34,11 @@ public class UpdateUserRequest {
          this.email = email;
      }
 
-     public String getRole() {
+     public UserRole getRole() {
          return role;
      }
 
-     public void setRole(String role) {
+     public void setRole(UserRole role) {
          this.role = role;
      }
 
