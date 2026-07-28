@@ -30,26 +30,26 @@ public class RefreshToken {
     private String tokenHash;
     
     @Column(name = "expires_at",nullable = false)
-    private LocalDateTime expiredAt;
+    private LocalDateTime expiresAt;
     
     @Column(nullable = false)
     private Boolean revoked;
     
     @Column(name = "created_at",nullable = false)
-    private LocalDateTime created_At;
+    private LocalDateTime createdAt;
 
 
 
 
 
-    public RefreshToken(Long id, User user, String tokenHash, LocalDateTime expiredAt, Boolean revoked,
-            LocalDateTime created_At) {
+    public RefreshToken(Long id, User user, String tokenHash, LocalDateTime expiresAt, Boolean revoked,
+            LocalDateTime createdAt) {
         Id = id;
         this.user = user;
         this.tokenHash = tokenHash;
-        this.expiredAt = expiredAt;
+        this.expiresAt = expiresAt;
         this.revoked = revoked;
-        this.created_At = created_At;
+        this.createdAt = createdAt;
     }
 
 
@@ -83,13 +83,13 @@ public class RefreshToken {
     }
 
 
-    public LocalDateTime getExpiredAt() {
-        return expiredAt;
+    public LocalDateTime getExpiresAt() {
+        return expiresAt;
     }
 
 
-    public void setExpiredAt(LocalDateTime expiredAt) {
-        this.expiredAt = expiredAt;
+    public void setExpiredAt(LocalDateTime expiresAt) {
+        this.expiresAt = expiredAt;
     }
 
 
@@ -103,13 +103,13 @@ public class RefreshToken {
     }
 
 
-    public LocalDateTime getCreated_At() {
-        return created_At;
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
 
-    public void setCreated_At(LocalDateTime created_At) {
-        this.created_At = created_At;
+    public void setCreated_At(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 
     

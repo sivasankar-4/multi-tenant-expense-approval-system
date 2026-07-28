@@ -4,11 +4,10 @@
             "type": "java",
             "name": "Spring Boot-ExpenseApprovalSystemApplication<expense-approval-system>",
             "request": "launch",
-            "cwd": "${workspaceFolder}",
+            "cwd": "${workspaceFolder}/expense-approval-system",
             "mainClass": "com.siva.expense_approval_system.ExpenseApprovalSystemApplication",
             "projectName": "expense-approval-system",
-            "args": "",
-            "envFile": "${workspaceFolder}/.env"
+            "args": ""
         }
     ]
 }

@@ -6,4 +6,9 @@ import com.siva.expense_approval_system.application.service.RefreshTokenService;
 
 @Service
 public class RefreshTokenServiceImpl implements RefreshTokenService {
+
+        private final RefreshTokenRepository refreshTokenRepository;
+
+        
+
 }
