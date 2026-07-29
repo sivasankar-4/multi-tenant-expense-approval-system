@@ -88,8 +88,8 @@ public class RefreshToken {
     }
 
 
-    public void setExpiredAt(LocalDateTime expiresAt) {
-        this.expiresAt = expiredAt;
+    public void setExpiresAt(LocalDateTime expiresAt) {
+        this.expiresAt = expiresAt;
     }
 
 
@@ -108,7 +108,7 @@ public class RefreshToken {
     }
 
 
-    public void setCreated_At(LocalDateTime createdAt) {
+    public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
 

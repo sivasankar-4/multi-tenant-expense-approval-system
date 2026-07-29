@@ -3,12 +3,14 @@ package com.siva.expense_approval_system.application.impl;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.siva.expense_approval_system.api.dto.request.LoginRequest;
 import com.siva.expense_approval_system.api.dto.response.LoginResponse;
 import com.siva.expense_approval_system.application.service.AuthService;
 import com.siva.expense_approval_system.application.service.RefreshTokenService;
+import com.siva.expense_approval_system.domain.model.User;
 import com.siva.expense_approval_system.domain.repository.UserRepository;
 import com.siva.expense_approval_system.infrastructure.security.JwtService;
 
@@ -23,21 +25,30 @@ public class AuthServiceImpl implements AuthService{
     private final UserRepository userRepository;
     private final RefreshTokenService refreshTokenService;
     private final JwtService jwtService;
+    private final PasswordEncoder passwordEncoder;
     
     
 
      public AuthServiceImpl(AuthenticationManager authenticationManager, UserRepository userRepository,
-            RefreshTokenService refreshTokenService, JwtService jwtService) {
+            RefreshTokenService refreshTokenService, JwtService jwtService, PasswordEncoder passwordEncoder) {
         this.authenticationManager = authenticationManager;
         this.userRepository = userRepository;
         this.refreshTokenService = refreshTokenService;
         this.jwtService = jwtService;
+        this.passwordEncoder = passwordEncoder;
     }
 
 
 
      @Override
     public LoginResponse login(LoginRequest request){
+        userRepository.findByEmail(request.getEmail()).ifPresent(user -> {
+            if (!user.getPassword().startsWith("$2") && request.getPassword().equals(user.getPassword())) {
+                user.setPassword(passwordEncoder.encode(request.getPassword()));
+                userRepository.save(user);
+            }
+        });
+
         Authentication authentication = authenticationManager.authenticate(
                          new UsernamePasswordAuthenticationToken(
                             request.getEmail(), 
@@ -45,7 +56,19 @@ public class AuthServiceImpl implements AuthService{
             )
         );
 
-        return new LoginResponse("", "", "Bearer");
+        User user = userRepository.findByEmail(request.getEmail())
+            .orElseThrow(() -> new IllegalStateException("Authenticated user was not found"));
+
+    String accessToken = jwtService.generateToken(user);
+
+    String refreshToken =
+            refreshTokenService.createRefreshToken(user);
+
+    return new LoginResponse(
+            accessToken,
+            refreshToken,
+            "Bearer"
+    );
     }
 
 }

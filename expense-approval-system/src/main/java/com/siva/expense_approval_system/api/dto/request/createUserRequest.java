@@ -23,7 +23,7 @@ public class CreateUserRequest {
     @Size(min = 8, message = "Password must contain at least 8 Characters")
     private String password;
     
-    @NotBlank(message = "role is required")
+    @NotNull(message = "role is required")
     private UserRole role;
 
     public Long getTenantId() {

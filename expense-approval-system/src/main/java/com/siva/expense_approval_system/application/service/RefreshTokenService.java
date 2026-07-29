@@ -1,8 +1,13 @@
 package com.siva.expense_approval_system.application.service;
 
+import java.util.Optional;
+
+import com.siva.expense_approval_system.domain.model.RefreshToken;
+import com.siva.expense_approval_system.domain.model.User;
+
 public interface RefreshTokenService {
 
-    RefreshToken createRefreshToken(User user);
+    String createRefreshToken(User user);
 
     RefreshToken verifyExpiration(RefreshToken token);
 

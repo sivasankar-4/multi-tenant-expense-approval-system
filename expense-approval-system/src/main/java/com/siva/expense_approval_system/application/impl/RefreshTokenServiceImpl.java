@@ -1,10 +1,19 @@
 package com.siva.expense_approval_system.application.impl;
 
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.time.LocalDateTime;
+import java.util.HexFormat;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
 import com.siva.expense_approval_system.application.service.RefreshTokenService;
+import com.siva.expense_approval_system.domain.model.RefreshToken;
+import com.siva.expense_approval_system.domain.model.User;
+import com.siva.expense_approval_system.domain.repository.RefreshTokenRepository;
 
 @Service
 public class RefreshTokenServiceImpl implements RefreshTokenService {

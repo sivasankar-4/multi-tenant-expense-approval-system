@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Objects;
 
 import org.springframework.lang.NonNull;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.siva.expense_approval_system.application.service.UserService;
@@ -15,13 +16,16 @@ public class UserServiceImpl implements UserService{
     
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
     
-    public UserServiceImpl(UserRepository userRepository){
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder){
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
     public User createUser(@NonNull User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(Objects.requireNonNull(user, "User must not be null"));
     }
 
