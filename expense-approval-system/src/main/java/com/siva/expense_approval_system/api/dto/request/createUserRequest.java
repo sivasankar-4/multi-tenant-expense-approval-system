@@ -9,9 +9,6 @@ import jakarta.validation.constraints.Size;
 
 public class CreateUserRequest {
 
-    @NotNull
-    private Long tenantId;
-    
     @NotBlank(message =  "name is required")
     private String name;
     
@@ -26,13 +23,6 @@ public class CreateUserRequest {
     @NotNull(message = "role is required")
     private UserRole role;
 
-    public Long getTenantId() {
-        return tenantId;
-    }
-
-    public void setTenantId(Long tenantId) {
-        this.tenantId = tenantId;
-    }
 
     public String getName() {
         return name;
