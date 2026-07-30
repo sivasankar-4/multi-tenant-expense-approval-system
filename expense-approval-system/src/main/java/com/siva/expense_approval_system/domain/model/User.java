@@ -29,7 +29,7 @@ public class User {
      private Long id;
     
      @ManyToOne
-     @JoinColumn(name = "tenant_id",nullable = false)
+     @JoinColumn(name = "tenant_id")
      private Tenant tenant;
     
      @Column(nullable = false)

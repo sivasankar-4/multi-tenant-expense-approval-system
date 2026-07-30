@@ -29,6 +29,7 @@ public class UserMapper {
          return user;
      }
 
+
      public void updateEntity(UpdateUserRequest request ,User user){
 
          user.setName(request.getName());
@@ -48,9 +49,9 @@ public class UserMapper {
         if(user.getRole() != null){
              response.setRole(user.getRole().name());
         }
-        if(user.getTenant() != null){
+         if(user.getTenant() != null){
             response.setTenantid(user.getTenant().getId());
-        }
+         }
 
         return response;
      }

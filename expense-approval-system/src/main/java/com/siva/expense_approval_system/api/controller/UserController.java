@@ -38,12 +38,12 @@ public class UserController {
 
    private final UserMapper userMapper;
 
-   private final TenantService tenantService;
+   private final CurrentUserService currentUserService;
 
-   public UserController(UserService userService,TenantService tenantService,UserMapper userMapper) {
+   public UserController(UserService userService,CurrentUserService currentUserService,UserMapper userMapper) {
            
            this.userService = userService;
-           this.tenantService = tenantService;
+           this.currentUserService = currentUserService;
            this.userMapper = userMapper;
    }
     
@@ -60,8 +60,8 @@ public class UserController {
   @PreAuthorize("hasRole('FINANCE_ADMIN')")
    public ResponseEntity<UserResponse> createUser(@Valid @RequestBody CreateUserRequest request){
 
-        Tenant tenant = tenantService.getTenantById(request.getTenantId());
-
+    
+       Tenant tenant = currentUserService.getCurrentTenant();
         User user = userMapper.toEntityMapping(request, tenant);
         
         User savedUser = userService.createUser(user);
