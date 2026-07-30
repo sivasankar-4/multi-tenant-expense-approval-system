@@ -1,5 +1,23 @@
 {
+    "version": "0.2.0",
     "configurations": [
+
+
+        {
+            "type": "java",
+            "name": "ExpenseApprovalSystemApplication",
+            "request": "launch",
+            "mainClass": "ExpenseApprovalSystemApplication",
+            "projectName": "expense-approval-system"
+        },
+        {
+            "type": "java",
+            "name": "ExpenseApprovalSystemApplication",
+            "request": "launch",
+            "cwd": "${workspaceFolder}/expense-approval-system",
+            "mainClass": "com.siva.expense_approval_system.ExpenseApprovalSystemApplication",
+            "projectName": "expense-approval-system"
+        },
         {
             "type": "java",
             "name": "Spring Boot-ExpenseApprovalSystemApplication<expense-approval-system>",

@@ -19,6 +19,10 @@ public class CustomUserDetails implements UserDetails{
               this.user = user;
         }
 
+        public User getuser(){
+            return user;
+        }
+
         public Collection<? extends GrantedAuthority> getAuthorities() {
             return List.of(new SimpleGrantedAuthority("ROLE_" + user.getRole().name()));
         }
