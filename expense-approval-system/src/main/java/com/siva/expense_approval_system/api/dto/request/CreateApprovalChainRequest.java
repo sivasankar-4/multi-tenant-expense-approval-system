@@ -9,9 +9,6 @@ import jakarta.validation.constraints.PositiveOrZero;
 
 public class CreateApprovalChainRequest {
 
-    @NotNull(message = "tenant id is required")
-    private Long tenantId;
-
     @NotNull(message = "minimum amount is required")
     @PositiveOrZero(message = "minimum amount must be zero or greater")
     private BigDecimal minAmount;
@@ -27,8 +24,6 @@ public class CreateApprovalChainRequest {
     @NotNull(message = "approver role is required")
     private Role approverRole;
 
-    public Long getTenantId() { return tenantId; }
-    public void setTenantId(Long tenantId) { this.tenantId = tenantId; }
     public BigDecimal getMinAmount() { return minAmount; }
     public void setMinAmount(BigDecimal minAmount) { this.minAmount = minAmount; }
     public BigDecimal getMaxAmount() { return maxAmount; }
