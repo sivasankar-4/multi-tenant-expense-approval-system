@@ -65,6 +65,7 @@ public class ExpenseController {
       }
 
       @GetMapping
+      @PreAuthorize("isAuthenticated()")
       public ResponseEntity<List<ExpenseResponse>> getAllExpenses(){
 
          List<Expense> expenses = expenseService.getAllExpenses();
@@ -75,6 +76,7 @@ public class ExpenseController {
       }
       
       @GetMapping("/{id}")
+      @PreAuthorize("isAuthenticated()")
       public ResponseEntity<ExpenseResponse> getExpenseById(@PathVariable Long id){
 
         Expense expense = expenseService.getExpenseById(id);
@@ -85,6 +87,7 @@ public class ExpenseController {
       }
      
       @PutMapping("/{id}")
+      @PreAuthorize("hasRole('FINANCE_ADMIN')")
       public ResponseEntity<ExpenseResponse> updateExpense(@PathVariable Long id, @RequestBody @Valid UpdateExpenseRequest request){
               
         Expense expense = expenseService.getExpenseById(id);
@@ -107,12 +110,14 @@ public class ExpenseController {
       }
 
       @PutMapping("/{id}/reject")
+      @PreAuthorize("hasAnyRole('MANAGER','FINANCE_ADMIN')")
       public ResponseEntity<ExpenseResponse> RejectExpense(@PathVariable Long id) {
         Expense rejectedExpense = expenseService.RejectExpense(expenseService.getExpenseById(id));
         return ResponseEntity.ok(expenseMapper.toResponse(rejectedExpense));
       }
     
       @DeleteMapping("/{id}")
+      @PreAuthorize("hasRole('FINANCE_ADMIN')")
       public ResponseEntity<Void> deleteExpense(@PathVariable Long id){   
           expenseService.deleteExpense(id);
 

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -36,6 +37,7 @@ public class TenantController {
      }
     
      @PostMapping
+     @PreAuthorize("hasRole('FINANCE_ADMIN')")
      public ResponseEntity<TenantResponse> createTenant(@Valid @RequestBody CreateTenantRequest request){
 
          Tenant tenant = tenantMapper.toEntity(request);
@@ -48,6 +50,7 @@ public class TenantController {
      }
 
      @GetMapping
+     @PreAuthorize("hasRole('FINANCE_ADMIN')")
      public ResponseEntity<List<TenantResponse>> getAllTenants(){
      
         List<Tenant> tenants = tenantService.getAllTenants();
@@ -58,6 +61,7 @@ public class TenantController {
      }
      
      @GetMapping("/{id}")
+     @PreAuthorize("hasRole('FINANCE_ADMIN')")
      public ResponseEntity<TenantResponse> getTenantById(@PathVariable Long id){
            
         Tenant tenant = tenantService.getTenantById((id));
@@ -69,6 +73,7 @@ public class TenantController {
      }
    
      @PutMapping("/{id}")
+     @PreAuthorize("hasRole('FINANCE_ADMIN')")
      public ResponseEntity<TenantResponse> updateTenant(@PathVariable Long id, @Valid @RequestBody UpdateTenantRequest request){
         
          Tenant tenant = tenantService.getTenantById(id);
@@ -82,6 +87,7 @@ public class TenantController {
      }
      
      @DeleteMapping("/{id}")
+     @PreAuthorize("hasRole('FINANCE_ADMIN')")
 
      public ResponseEntity<Void> deleteTenant(@PathVariable Long id){
 

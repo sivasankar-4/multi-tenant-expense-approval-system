@@ -72,6 +72,7 @@ public class UserController {
    }
 
      @GetMapping
+     @PreAuthorize("hasRole('FINANCE_ADMIN')")
      public ResponseEntity<List<UserResponse>> getAllUsers() {
 
          List<User> users = userService.getAllUsers();
@@ -83,6 +84,7 @@ public class UserController {
      }
      
      @GetMapping("/{id}")
+     @PreAuthorize("hasRole('FINANCE_ADMIN')")
      public ResponseEntity<UserResponse> getUserById(@PathVariable Long id){
 
          User user = userService.getUserById((id));
@@ -93,6 +95,7 @@ public class UserController {
      }
      
      @PutMapping("/{id}")
+     @PreAuthorize("hasRole('FINANCE_ADMIN')")
      /* Sample JSON for Postman PUT /api/users/{id}
       {
         "name": "Jane Doe Updated",
@@ -115,6 +118,7 @@ public class UserController {
      }
 
       @DeleteMapping("/{id}")
+     @PreAuthorize("hasRole('FINANCE_ADMIN')")
      public ResponseEntity<Void> deleteUser(@PathVariable Long id){
             
         userService.deleteUser(id);
