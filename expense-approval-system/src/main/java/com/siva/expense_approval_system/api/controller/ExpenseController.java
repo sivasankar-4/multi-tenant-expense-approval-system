@@ -20,11 +20,10 @@ import com.siva.expense_approval_system.api.dto.request.UpdateExpenseRequest;
 import com.siva.expense_approval_system.api.dto.response.ExpenseResponse;
 import com.siva.expense_approval_system.api.mapper.ExpenseMapper;
 import com.siva.expense_approval_system.application.service.ExpenseService;
-import com.siva.expense_approval_system.application.service.TenantService;
-import com.siva.expense_approval_system.application.service.UserService;
 import com.siva.expense_approval_system.domain.model.Expense;
 import com.siva.expense_approval_system.domain.model.Tenant;
 import com.siva.expense_approval_system.domain.model.User;
+import com.siva.expense_approval_system.infrastructure.security.CurrentUserService;
 
 import jakarta.validation.Valid;
 
@@ -34,26 +33,28 @@ public class ExpenseController {
     
       private final ExpenseService expenseService;
       private final ExpenseMapper expenseMapper;
-      private final TenantService tenantService;
-      private final UserService userService;
+      private final CurrentUserService currentUserService;
 
       public ExpenseController(ExpenseService expenseService, ExpenseMapper expenseMapper ,
-                                TenantService tenantService,UserService userService) {
+                                  CurrentUserService currentUserService) {
         this.expenseService = expenseService;
         this.expenseMapper = expenseMapper;
-        this.tenantService = tenantService;
-        this.userService = userService;
+        this.currentUserService = currentUserService;
+        
       }
 
       @PostMapping
       @PreAuthorize("hasAnyRole('EMPLOYEE','MANAGER','FINANCE_ADMIN')")
       public ResponseEntity<ExpenseResponse> createExpense(@RequestBody @Valid CreateExpenseRequest request){
          
-        Tenant tenant = tenantService.getTenantById(request.getTenantId());
+        // Tenant tenant = tenantService.getTenantById(request.getTenantId());
 
-        User user = userService.getUserById(request.getSubmittedbyId());
+        // User user = userService.getUserById(request.getSubmittedbyId());
 
-        Expense expense = expenseMapper.toEntity(request, tenant, user);
+        User currentUser = currentUserService.getCurrentUser();
+        Tenant currentTenant = currentUserService.getCurrentTenant();
+        
+        Expense expense = expenseMapper.toEntity(request, currentTenant, currentUser);
 
         Expense savedExpense = expenseService.submitExpense(expense);
 

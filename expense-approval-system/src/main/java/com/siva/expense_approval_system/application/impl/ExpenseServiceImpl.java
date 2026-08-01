@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import com.siva.expense_approval_system.application.service.ExpenseService;
@@ -14,6 +15,7 @@ import com.siva.expense_approval_system.domain.model.ApprovalChain;
 import com.siva.expense_approval_system.domain.model.Expense;
 import com.siva.expense_approval_system.domain.repository.ApprovalChainRepository;
 import com.siva.expense_approval_system.domain.repository.ExpenseRepository;
+import com.siva.expense_approval_system.infrastructure.security.CurrentUserService;
 
 @Service
 public class ExpenseServiceImpl implements ExpenseService{
@@ -23,14 +25,18 @@ public class ExpenseServiceImpl implements ExpenseService{
      private final ExpenseRepository expenseRepository;
 
      private final ApprovalChainRepository approvalChainRepository;
+     private final CurrentUserService currentUserService;
 
-     public ExpenseServiceImpl(ExpenseRepository expenseRepository, ApprovalChainRepository approvalChainRepository){
+     public ExpenseServiceImpl(ExpenseRepository expenseRepository, ApprovalChainRepository approvalChainRepository,
+             CurrentUserService currentUserService){
         this.expenseRepository = expenseRepository;
         this.approvalChainRepository = approvalChainRepository;
+        this.currentUserService = currentUserService;
      }
      
      @Override
      public Expense createExpense(Expense expense){
+        expense.setStatus(ExpenseStatus.PENDING);
         return expenseRepository.save(expense);
      }
      @Override
@@ -64,26 +70,27 @@ public class ExpenseServiceImpl implements ExpenseService{
 
      @Override
      public Expense ApproveExpense(Expense expense) {
-        validatePendingExpense(expense);
+        Expense tenantExpense = getExpenseById(expense.getId());
+        validatePendingExpense(tenantExpense);
        
 
         //this loads the configured approval chain for the expenses tenant
-        List<ApprovalChain> approvalChains = getApprovalChains(expense);
+        List<ApprovalChain> approvalChains = getApprovalChains(tenantExpense);
 
         log.debug("approveExpense expenseId={}, tenantId={}, currentApprovalStep={}, approvalChains={}",
-                expense.getId(),
-                expense.getTenant() != null ? expense.getTenant().getId() : null,
-                expense.getCurrentApprovalStep(),
+                tenantExpense.getId(),
+                tenantExpense.getTenant() != null ? tenantExpense.getTenant().getId() : null,
+                tenantExpense.getCurrentApprovalStep(),
                 approvalChains.stream()
                         .map(chain -> "step=" + chain.getStepOrder() + ",min=" + chain.getMinAmount() + ",max=" + chain.getMaxAmount())
                         .toList());
        
-         // it finds where the expense currently is it simplt finds the current chain
+         // it finds where the expense currently is it simply finds the current chain
         ApprovalChain currentChain = approvalChains.stream()
-                .filter(chain -> chain.getStepOrder().equals(expense.getCurrentApprovalStep()))
+                .filter(chain -> chain.getStepOrder().equals(tenantExpense.getCurrentApprovalStep()))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException(
-                        "No approval chain is configured for step " + expense.getCurrentApprovalStep() + "."));
+                        "No approval chain is configured for step " + tenantExpense.getCurrentApprovalStep() + "."));
        //it asks is there any step greater than 1 if it is step2 finance
         //so nextchain = step2
         ApprovalChain nextChain = approvalChains.stream()
@@ -96,30 +103,31 @@ public class ExpenseServiceImpl implements ExpenseService{
         
          // then it tells if the nextchain == null then it shows as approved if it is not null then goes to the next step
         if (nextChain == null) { //if finish workflow it set as null and status as approved
-            expense.setStatus(ExpenseStatus.APPROVED);
+            tenantExpense.setStatus(ExpenseStatus.APPROVED);
         } else {
-            expense.setCurrentApprovalStep(nextChain.getStepOrder());
+            tenantExpense.setCurrentApprovalStep(nextChain.getStepOrder());
         }
 
-        return expenseRepository.save(expense);
+        return expenseRepository.save(tenantExpense);
      }
 
      @Override
      public Expense RejectExpense(Expense expense) {
-        validatePendingExpense(expense);
-        expense.setStatus(ExpenseStatus.REJECTED);
-        return expenseRepository.save(expense);
+        Expense tenantExpense = getExpenseById(expense.getId());
+        validatePendingExpense(tenantExpense);
+        tenantExpense.setStatus(ExpenseStatus.REJECTED);
+        return expenseRepository.save(tenantExpense);
      }
 
      @Override
      public Expense getExpenseById(Long id) {
-        return expenseRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Expense not found: " + id));
+        return expenseRepository.findByIdAndTenantId(id, getCurrentTenantId())
+                .orElseThrow(() -> new AccessDeniedException("Expense not found or does not belong to the current tenant."));
      }
 
      @Override
      public List<Expense> getAllExpenses() {
-        return expenseRepository.findAll();
+        return expenseRepository.findAllByTenantId(getCurrentTenantId());
      }
 
      @Override
@@ -157,5 +165,12 @@ public class ExpenseServiceImpl implements ExpenseService{
         if (expense.getStatus() != ExpenseStatus.PENDING) {
             throw new IllegalArgumentException("Only pending expenses can be approved or rejected.");
         }
+     }
+
+     private Long getCurrentTenantId() {
+        if (currentUserService.getCurrentTenant() == null || currentUserService.getCurrentTenant().getId() == null) {
+            throw new AccessDeniedException("Current user is not associated with a tenant.");
+        }
+        return currentUserService.getCurrentTenant().getId();
      }
 }
