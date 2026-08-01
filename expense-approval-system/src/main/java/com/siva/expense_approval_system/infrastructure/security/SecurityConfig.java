@@ -14,8 +14,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.HttpStatusEntryPoint;
+import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 
 @Configuration
 @EnableWebSecurity
@@ -54,11 +56,26 @@ public class SecurityConfig {
 
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    AuthenticationEntryPoint authenticationEntryPoint = (request, response, authException) -> {
+      response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+      response.setStatus(HttpStatus.UNAUTHORIZED.value());
+      response.setCharacterEncoding("UTF-8");
+      response.getWriter().write("{\"error\":\"Unauthorized\"}");
+    };
+
+    AccessDeniedHandler accessDeniedHandler = (request, response, accessDeniedException) -> {
+      response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+      response.setStatus(HttpStatus.FORBIDDEN.value());
+      response.setCharacterEncoding("UTF-8");
+      response.getWriter().write("{\"error\":\"Forbidden\"}");
+    };
+
     http
         .csrf(csrf -> csrf.disable())
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .exceptionHandling(exceptions -> exceptions
-            .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
+            .authenticationEntryPoint(authenticationEntryPoint)
+            .accessDeniedHandler(accessDeniedHandler))
         .authorizeHttpRequests(auth -> auth
             .requestMatchers("/api/auth/login").permitAll()
             .anyRequest().authenticated())

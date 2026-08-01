@@ -3,7 +3,9 @@ package com.siva.expense_approval_system.infrastructure.security;
 import java.io.IOException;
 
 import org.springframework.http.HttpHeaders;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -35,16 +37,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
             FilterChain filterChain) throws ServletException, IOException {
         String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+        String token = extractToken(authorizationHeader);
 
-        if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
+        if (token == null) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        String token = authorizationHeader.substring(7);
         try {
             String username = jwtService.extractUsername(token);
-            if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            Authentication existingAuth = SecurityContextHolder.getContext().getAuthentication();
+            if (username != null && (existingAuth == null || existingAuth instanceof AnonymousAuthenticationToken)) {
                 UserDetails userDetails = userDetailsService.loadUserByUsername(username);
                 if (jwtService.isTokenValid(token, userDetails)) {
                     UsernamePasswordAuthenticationToken authentication =
@@ -52,7 +55,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                     log.info("JWT authenticated user {} with authorities {}", username, userDetails.getAuthorities());
+                } else {
+                    log.warn("JWT validation failed for user {}", username);
                 }
+            } else {
+                log.warn("JWT authentication skipped because no username or auth context already present");
             }
         } catch (JwtException | IllegalArgumentException ex) {
             SecurityContextHolder.clearContext();
@@ -62,5 +69,19 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         filterChain.doFilter(request, response);
+    }
+
+    private String extractToken(String authorizationHeader) {
+        if (authorizationHeader == null || authorizationHeader.isBlank()) {
+            return null;
+        }
+
+        String headerValue = authorizationHeader.trim();
+        if (headerValue.regionMatches(true, 0, "Bearer", 0, 6)) {
+            String token = headerValue.substring(6).trim();
+            return token.isEmpty() ? null : token;
+        }
+
+        return null;
     }
 }
