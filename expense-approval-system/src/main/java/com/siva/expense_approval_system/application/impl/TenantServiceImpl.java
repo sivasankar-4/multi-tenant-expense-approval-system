@@ -4,21 +4,25 @@ import java.util.List;
 //import java.util.Objects;
 
 import org.springframework.lang.NonNull;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import com.siva.expense_approval_system.application.service.TenantService;
 import com.siva.expense_approval_system.domain.model.Tenant;
 import com.siva.expense_approval_system.domain.repository.TenantRepository;
+import com.siva.expense_approval_system.infrastructure.security.CurrentUserService;
 
 @Service
 public class TenantServiceImpl implements TenantService{
     
    
     private final TenantRepository tenantRepository;
+    private final CurrentUserService currentUserService;
 
-    public TenantServiceImpl(TenantRepository tenantRepository){
+    public TenantServiceImpl(TenantRepository tenantRepository, CurrentUserService currentUserService){
 
         this.tenantRepository = tenantRepository;
+        this.currentUserService = currentUserService;
     }
     
     @Override
@@ -29,16 +33,16 @@ public class TenantServiceImpl implements TenantService{
     
     @Override
     public Tenant getTenantById(@NonNull Long id){
-      
-        return tenantRepository.findById(id)
-                         .orElseThrow(() -> new IllegalArgumentException("Tenant Not Found" + id));
-                
+        Tenant currentTenant = getCurrentTenant();
+        if (!currentTenant.getId().equals(id)) {
+            throw new AccessDeniedException("Tenant not found or does not belong to the current user.");
+        }
+        return currentTenant;
     }
    
      @Override
     public List<Tenant> getAllTenants() {
-
-        return tenantRepository.findAll();
+        return List.of(getCurrentTenant());
     }
 
     @Override
@@ -56,6 +60,14 @@ public class TenantServiceImpl implements TenantService{
         Tenant tenant = getTenantById(id);
 
         tenantRepository.delete(tenant);
+    }
+
+    private Tenant getCurrentTenant() {
+        Tenant currentTenant = currentUserService.getCurrentTenant();
+        if (currentTenant == null || currentTenant.getId() == null) {
+            throw new AccessDeniedException("Current user is not associated with a tenant.");
+        }
+        return currentTenant;
     }
 
 }

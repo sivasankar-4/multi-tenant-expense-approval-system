@@ -4,12 +4,14 @@ import java.util.List;
 import java.util.Objects;
 
 import org.springframework.lang.NonNull;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.siva.expense_approval_system.application.service.UserService;
 import com.siva.expense_approval_system.domain.model.User;
 import com.siva.expense_approval_system.domain.repository.UserRepository;
+import com.siva.expense_approval_system.infrastructure.security.CurrentUserService;
 
 @Service
 public class UserServiceImpl implements UserService{
@@ -17,34 +19,37 @@ public class UserServiceImpl implements UserService{
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final CurrentUserService currentUserService;
     
-    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder){
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder,
+            CurrentUserService currentUserService){
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.currentUserService = currentUserService;
     }
 
     @Override
     public User createUser(@NonNull User user) {
+        user.setTenant(currentUserService.getCurrentTenant());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(Objects.requireNonNull(user, "User must not be null"));
     }
 
     @Override
     public User getUserById(@NonNull Long id) {
-        return userRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("User not found: " + id));
+        return userRepository.findByIdAndTenantId(id, getCurrentTenantId())
+                .orElseThrow(() -> new AccessDeniedException("User not found or does not belong to the current tenant."));
     }
     
     @Override
     public List<User> getAllUsers() {
-        return userRepository.findAll();
+        return userRepository.findAllByTenantId(getCurrentTenantId());
     }
 
     @Override
     @Transactional
     public User updateUser(@NonNull Long id, @NonNull User user) {
         User existingUser = getUserById(id);
-        existingUser.setTenant(user.getTenant());
         existingUser.setName(user.getName());
         existingUser.setEmail(user.getEmail());
         existingUser.setPassword(user.getPassword());
@@ -57,6 +62,13 @@ public class UserServiceImpl implements UserService{
         User user = getUserById(id);
 
         userRepository.delete(user);
+    }
+
+    private Long getCurrentTenantId() {
+        if (currentUserService.getCurrentTenant() == null || currentUserService.getCurrentTenant().getId() == null) {
+            throw new AccessDeniedException("Current user is not associated with a tenant.");
+        }
+        return currentUserService.getCurrentTenant().getId();
     }
 
 
