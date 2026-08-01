@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import com.siva.expense_approval_system.application.exception.WorkflowValidationException;
+
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -27,6 +29,13 @@ public class GlobalExceptionHandler {
         Map<String, String> error = new HashMap<>();
         error.put("error", ex.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+    }
+
+    @ExceptionHandler(WorkflowValidationException.class)
+    public ResponseEntity<Map<String, String>> handleWorkflowValidationException(WorkflowValidationException ex) {
+        Map<String, String> error = new HashMap<>();
+        error.put("error", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)

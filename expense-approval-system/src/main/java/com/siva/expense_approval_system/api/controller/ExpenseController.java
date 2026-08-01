@@ -87,7 +87,7 @@ public class ExpenseController {
       }
      
       @PutMapping("/{id}")
-      @PreAuthorize("hasRole('FINANCE_ADMIN')")
+      @PreAuthorize("hasAnyRole('EMPLOYEE','MANAGER','FINANCE_ADMIN')")
       public ResponseEntity<ExpenseResponse> updateExpense(@PathVariable Long id, @RequestBody @Valid UpdateExpenseRequest request){
               
         Expense expense = expenseService.getExpenseById(id);
@@ -117,7 +117,7 @@ public class ExpenseController {
       }
     
       @DeleteMapping("/{id}")
-      @PreAuthorize("hasRole('FINANCE_ADMIN')")
+      @PreAuthorize("hasAnyRole('EMPLOYEE','MANAGER','FINANCE_ADMIN')")
       public ResponseEntity<Void> deleteExpense(@PathVariable Long id){   
           expenseService.deleteExpense(id);
 

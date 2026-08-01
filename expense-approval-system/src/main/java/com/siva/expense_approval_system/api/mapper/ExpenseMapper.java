@@ -27,7 +27,6 @@ public class ExpenseMapper {
          expense.setCategory(request.getCategory());
          expense.setDescription(request.getDescription());
          expense.setStatus(ExpenseStatus.PENDING);
-         expense.setCurrentApprovalStep(1);
          expense.setCreatedAt(LocalDateTime.now());
 
          return expense;

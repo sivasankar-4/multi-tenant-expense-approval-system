@@ -12,4 +12,6 @@ public interface ApprovalActionRepository extends JpaRepository<ApprovalAction,L
     Optional<ApprovalAction> findByIdAndExpenseTenantId(Long id, Long tenantId);
 
     List<ApprovalAction> findAllByExpenseTenantId(Long tenantId);
+
+    List<ApprovalAction> findByExpenseIdOrderByWorkflowStepAsc(Long expenseId);
 }

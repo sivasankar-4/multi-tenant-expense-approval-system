@@ -14,10 +14,13 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "ApprovalAction")
+@Table(name = "ApprovalAction", uniqueConstraints = @UniqueConstraint(
+        name = "uk_approval_action_expense_step",
+        columnNames = {"expense_id", "workflow_step"}))
 @NoArgsConstructor
 public class ApprovalAction {
     
@@ -35,7 +38,11 @@ public class ApprovalAction {
     private User approver;
     
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private ApprovalActionStatus action;
+
+    @Column(name = "workflow_step", nullable = false)
+    private Integer workflowStep;
     
     @Column(length = 500)
     private String comment;
@@ -43,12 +50,13 @@ public class ApprovalAction {
     @Column(name = "acted_at",nullable = false)
     private LocalDateTime actedAt;
 
-    public ApprovalAction(Long id, Expense expense, User approver, ApprovalActionStatus action, String comment,
+    public ApprovalAction(Long id, Expense expense, User approver, ApprovalActionStatus action, Integer workflowStep, String comment,
             LocalDateTime actedAt) {
         Id = id;
         this.expense = expense;
         this.approver = approver;
         this.action = action;
+        this.workflowStep = workflowStep;
         this.comment = comment;
         this.actedAt = actedAt;
     }
@@ -91,6 +99,14 @@ public class ApprovalAction {
 
     public void setAction(ApprovalActionStatus action) {
         this.action = action;
+    }
+
+    public Integer getWorkflowStep() {
+        return workflowStep;
+    }
+
+    public void setWorkflowStep(Integer workflowStep) {
+        this.workflowStep = workflowStep;
     }
 
 

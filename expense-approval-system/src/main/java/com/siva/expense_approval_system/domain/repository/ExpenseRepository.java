@@ -13,4 +13,6 @@ public interface ExpenseRepository extends JpaRepository<Expense,Long> {
     Optional<Expense> findByIdAndTenantId(Long id, Long tenantId);
 
     List<Expense> findAllByTenantId(Long tenantId);
+
+    List<Expense> findAllByTenantIdAndSubmittedById(Long tenantId, Long submittedById);
 }
