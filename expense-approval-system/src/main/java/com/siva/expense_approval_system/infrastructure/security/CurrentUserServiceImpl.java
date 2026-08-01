@@ -1,7 +1,9 @@
-import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
+package com.siva.expense_approval_system.infrastructure.security;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import com.siva.expense_approval_system.domain.model.Tenant;
+import com.siva.expense_approval_system.domain.model.User;
 
 @Service
 public class CurrentUserServiceImpl implements CurrentUserService{
@@ -13,8 +15,8 @@ public class CurrentUserServiceImpl implements CurrentUserService{
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         CustomUserDetails currentuser = (CustomUserDetails) authentication.getPrincipal();
-
-        return currentUser.getUser();
+         
+        return currentuser.getuser();
     }
 
     @Override

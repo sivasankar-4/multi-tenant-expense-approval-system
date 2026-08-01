@@ -7,7 +7,6 @@ import com.siva.expense_approval_system.api.dto.request.CreateUserRequest;
 import com.siva.expense_approval_system.api.dto.request.UpdateUserRequest;
 import com.siva.expense_approval_system.api.dto.response.UserResponse;
 import com.siva.expense_approval_system.api.mapper.UserMapper;
-import com.siva.expense_approval_system.application.service.TenantService;
 import com.siva.expense_approval_system.application.service.UserService;
 import com.siva.expense_approval_system.domain.model.Tenant;
 import com.siva.expense_approval_system.domain.model.User;
@@ -25,6 +24,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PutMapping;
+import com.siva.expense_approval_system.infrastructure.security.CurrentUserService;
 
 
 
