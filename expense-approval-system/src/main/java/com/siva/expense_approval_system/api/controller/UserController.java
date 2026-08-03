@@ -27,8 +27,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import com.siva.expense_approval_system.infrastructure.security.CurrentUserService;
 
 
-
-
 @RestController
 @RequestMapping("/api/users")
 
@@ -50,7 +48,6 @@ public class UserController {
    @PostMapping
    /* Sample JSON for Postman POST /api/users
     {
-      "tenantId": 1,
       "name": "Jane Doe",
       "email": "jane.doe@example.com",
       "password": "P@ssw0rd123",
@@ -123,8 +120,5 @@ public class UserController {
             
         userService.deleteUser(id);
         return ResponseEntity.noContent().build();
-     }
-
-
-     
+     } 
 }
