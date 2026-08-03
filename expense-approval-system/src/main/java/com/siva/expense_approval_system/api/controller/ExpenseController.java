@@ -105,6 +105,8 @@ public class ExpenseController {
       @PutMapping("/{id}/approve")
       @PreAuthorize("hasAnyRole('MANAGER','FINANCE_ADMIN')")
       public ResponseEntity<ExpenseResponse> approveExpense(@PathVariable Long id) {
+
+         System.out.println("===== APPROVE CONTROLLER REACHED =====");
         Expense approvedExpense = expenseService.ApproveExpense(expenseService.getExpenseById(id));
         return ResponseEntity.ok(expenseMapper.toResponse(approvedExpense));
       }

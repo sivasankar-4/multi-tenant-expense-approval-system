@@ -14,6 +14,9 @@ public class CurrentUserServiceImpl implements CurrentUserService{
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
+         System.out.println(authentication);
+        System.out.println(authentication.getPrincipal());
+
         CustomUserDetails currentuser = (CustomUserDetails) authentication.getPrincipal();
          
         return currentuser.getuser();
