@@ -2,8 +2,12 @@ package com.siva.expense_approval_system.domain.model;
 
 import java.time.LocalDateTime;
 
+import com.siva.expense_approval_system.domain.enums.AuditActionType;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -28,14 +32,15 @@ public class AuditLog {
     @Column(name = "actor_id",nullable = false)
     private Long actorId;
     
+    @Enumerated(EnumType.STRING)
     @Column(name = "action_type",nullable = false)
-    private String ActionType;
+    private AuditActionType actionType;
     
     @Column(name = "entity_type",nullable = false)
-    private String EntityType;
+    private String entityType;
    
     @Column(name = "entity_id",nullable = false)
-    private Long EntityId;
+    private Long entityId;
     
     @Column(columnDefinition = "TEXT")
     private String metaData;
@@ -44,14 +49,14 @@ public class AuditLog {
     private LocalDateTime createdAt;
 
 
-    public AuditLog(Long id, Tenant tenant, Long actorId, String actionType, String entityType, Long entityId,
+    public AuditLog(Long id, Tenant tenant, Long actorId, AuditActionType actionType, String entityType, Long entityId,
             String metaData, LocalDateTime createdAt) {
         Id = id;
         this.tenant = tenant;
         this.actorId = actorId;
-        ActionType = actionType;
-        EntityType = entityType;
-        EntityId = entityId;
+        this.actionType = actionType;
+        this.entityType = entityType;
+        this.entityId = entityId;
         this.metaData = metaData;
         this.createdAt = createdAt;
     }
@@ -94,38 +99,38 @@ public class AuditLog {
 
 
 
-    public String getActionType() {
-        return ActionType;
+    public AuditActionType getActionType() {
+        return actionType;
     }
 
 
 
-    public void setActionType(String actionType) {
-        ActionType = actionType;
+    public void setActionType(AuditActionType actionType) {
+        this.actionType = actionType;
     }
 
 
 
     public String getEntityType() {
-        return EntityType;
+        return entityType;
     }
 
 
 
     public void setEntityType(String entityType) {
-        EntityType = entityType;
+        this.entityType = entityType;
     }
 
 
 
     public Long getEntityId() {
-        return EntityId;
+        return entityId;
     }
 
 
 
     public void setEntityId(Long entityId) {
-        EntityId = entityId;
+        this.entityId = entityId;
     }
 
 
