@@ -45,6 +45,7 @@ public class ExpenseServiceImpl implements ExpenseService{
      }
      
      @Override
+     @Transactional
      public Expense createExpense(Expense expense){
         expense.setStatus(ExpenseStatus.PENDING);
         expense.initializeLegacyApprovalStep();
@@ -130,6 +131,7 @@ public class ExpenseServiceImpl implements ExpenseService{
      }
 
      @Override
+     @Transactional
      public Expense updateExpense(Long id, Expense expense) {
         Expense existingExpense = getExpenseById(id);
         existingExpense.setTenant(expense.getTenant());
@@ -143,6 +145,7 @@ public class ExpenseServiceImpl implements ExpenseService{
      }
 
      @Override
+     @Transactional
      public void deleteExpense(Long id) {
         expenseRepository.delete(getExpenseById(id));
      }
