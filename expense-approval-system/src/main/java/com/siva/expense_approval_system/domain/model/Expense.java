@@ -15,6 +15,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Version;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.NoArgsConstructor;
@@ -57,6 +58,10 @@ public class Expense {
     @Column(nullable = false)
     private ExpenseStatus status;
 
+     @Version
+     @Column(nullable = false)
+     private Long version;
+
     // Legacy schema column retained for backward-compatible inserts. Workflow progress is derived from ApprovalAction.
     @Deprecated
     @Column(name = "current_approval_step", nullable = false)
@@ -68,7 +73,7 @@ public class Expense {
 
     public Expense(Long id ,Tenant tenant, User submittedBy, @NotNull BigDecimal amount, @NotBlank String currency,
             @NotBlank String category, String description, ExpenseStatus status,
-            LocalDateTime createdAt) {                         
+            LocalDateTime createdAt,Long version) {                         
         this.id = id;
         this.tenant = tenant;
         this.submittedBy = submittedBy;                                                                                                                                                                   
@@ -78,6 +83,7 @@ public class Expense {
         this.description = description;
         this.status = status;
         this.createdAt = createdAt;
+        this.version = version;
     }
 
     public Long getId() {
@@ -155,6 +161,15 @@ public class Expense {
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
+
+    public Long getVersion() {
+        return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
+    }
+
 
 }
 
