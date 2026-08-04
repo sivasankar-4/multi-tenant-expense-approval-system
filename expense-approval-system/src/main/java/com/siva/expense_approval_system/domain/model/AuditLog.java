@@ -3,6 +3,7 @@ package com.siva.expense_approval_system.domain.model;
 import java.time.LocalDateTime;
 
 import com.siva.expense_approval_system.domain.enums.AuditActionType;
+import com.siva.expense_approval_system.domain.enums.AuditEntityType;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -36,8 +37,9 @@ public class AuditLog {
     @Column(name = "action_type",nullable = false)
     private AuditActionType actionType;
     
+    @Enumerated(EnumType.STRING)
     @Column(name = "entity_type",nullable = false)
-    private String entityType;
+    private AuditEntityType entityType;
    
     @Column(name = "entity_id",nullable = false)
     private Long entityId;
@@ -49,7 +51,7 @@ public class AuditLog {
     private LocalDateTime createdAt;
 
 
-    public AuditLog(Long id, Tenant tenant, Long actorId, AuditActionType actionType, String entityType, Long entityId,
+    public AuditLog(Long id, Tenant tenant, Long actorId, AuditActionType actionType, AuditEntityType entityType, Long entityId,
             String metaData, LocalDateTime createdAt) {
         Id = id;
         this.tenant = tenant;
@@ -111,13 +113,13 @@ public class AuditLog {
 
 
 
-    public String getEntityType() {
+    public AuditEntityType getEntityType() {
         return entityType;
     }
 
 
 
-    public void setEntityType(String entityType) {
+    public void setEntityType(AuditEntityType entityType) {
         this.entityType = entityType;
     }
 
