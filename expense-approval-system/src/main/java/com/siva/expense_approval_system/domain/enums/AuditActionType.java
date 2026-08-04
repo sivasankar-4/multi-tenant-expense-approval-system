@@ -1,0 +1,13 @@
+package com.siva.expense_approval_system.domain.enums;
+
+public enum AuditActionType {
+    
+
+     CREATE,
+     UPDATE,
+     DELETE,
+     APPROVE,
+     REJECT,
+     LOGIN,
+     LOGOUT
+}
