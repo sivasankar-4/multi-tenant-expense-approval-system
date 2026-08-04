@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -45,4 +46,14 @@ public class GlobalExceptionHandler {
         }
         return errors;
     }
+
+    @ExceptionHandler(ObjectOptimisticLockingFailureException.class)
+public ResponseEntity<Map<String, String>> handleOptimisticLocking(
+        ObjectOptimisticLockingFailureException ex) {
+
+    Map<String, String> error = new HashMap<>();
+    error.put("error", "This expense was modified by another user. Please refresh and try again.");
+
+    return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
+}
 }
