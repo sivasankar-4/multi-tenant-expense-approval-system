@@ -11,8 +11,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.siva.expense_approval_system.application.exception.WorkflowValidationException;
+import com.siva.expense_approval_system.application.service.AuditService;
 import com.siva.expense_approval_system.application.service.ExpenseService;
 import com.siva.expense_approval_system.domain.enums.ApprovalActionStatus;
+import com.siva.expense_approval_system.domain.enums.AuditActionType;
+import com.siva.expense_approval_system.domain.enums.AuditEntityType;
 import com.siva.expense_approval_system.domain.enums.ExpenseStatus;
 import com.siva.expense_approval_system.domain.enums.UserRole;
 import com.siva.expense_approval_system.domain.model.ApprovalChain;
@@ -34,14 +37,16 @@ public class ExpenseServiceImpl implements ExpenseService{
      private final ApprovalChainRepository approvalChainRepository;
      private final ApprovalActionRepository approvalActionRepository;
      private final CurrentUserService currentUserService;
+     private final AuditService auditService;
 
      public ExpenseServiceImpl(ExpenseRepository expenseRepository, ApprovalChainRepository approvalChainRepository,
              ApprovalActionRepository approvalActionRepository,
-             CurrentUserService currentUserService){
+             CurrentUserService currentUserService,AuditService auditService){
         this.expenseRepository = expenseRepository;
         this.approvalChainRepository = approvalChainRepository;
         this.approvalActionRepository = approvalActionRepository;
         this.currentUserService = currentUserService;
+        this.auditService = auditService;
      }
      
      @Override
@@ -72,7 +77,17 @@ public class ExpenseServiceImpl implements ExpenseService{
 
       expense.setStatus(ExpenseStatus.PENDING);
       expense.initializeLegacyApprovalStep();
-      return expenseRepository.save(expense);
+      Expense savedExpense = expenseRepository.save(expense);
+
+  auditService.log(
+    expense.getTenant(),
+    AuditActionType.CREATE,
+    AuditEntityType.EXPENSE,
+    expense.getId(),
+    "Expense created"
+);
+
+     return savedExpense;
      }
 
      @Override
@@ -95,7 +110,16 @@ public class ExpenseServiceImpl implements ExpenseService{
                 tenantExpense.getId(),
                 tenantExpense.getTenant() != null ? tenantExpense.getTenant().getId() : null,
                 expectedStep.getStepOrder(), !hasRemainingSteps);
-        return expenseRepository.save(tenantExpense);
+        Expense savedApprovedExpense = expenseRepository.save(tenantExpense);
+        auditService.log(
+    tenantExpense.getTenant(),
+    AuditActionType.APPROVE,
+    AuditEntityType.EXPENSE,
+    tenantExpense.getId(),
+    "Workflow Step : " + expectedStep.getStepOrder()
+);
+
+return savedApprovedExpense;
      }
 
      @Override
@@ -109,7 +133,16 @@ public class ExpenseServiceImpl implements ExpenseService{
         ensureActionNotRecorded(actions, expectedStep.getStepOrder());
         approvalActionRepository.save(createApprovalAction(tenantExpense, expectedStep, ApprovalActionStatus.REJECTED));
         tenantExpense.setStatus(ExpenseStatus.REJECTED);
-        return expenseRepository.save(tenantExpense);
+        Expense savedRejectExpense = expenseRepository.save(tenantExpense);
+        auditService.log(
+    tenantExpense.getTenant(),
+    AuditActionType.REJECT,
+    AuditEntityType.EXPENSE,
+    tenantExpense.getId(),
+    "Rejected"
+);
+
+      return savedRejectExpense;
      }
 
      @Override

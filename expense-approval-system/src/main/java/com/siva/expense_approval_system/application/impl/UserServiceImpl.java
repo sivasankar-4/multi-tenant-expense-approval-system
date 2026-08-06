@@ -8,7 +8,11 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.siva.expense_approval_system.application.service.AuditService;
 import com.siva.expense_approval_system.application.service.UserService;
+import com.siva.expense_approval_system.domain.enums.AuditActionType;
+import com.siva.expense_approval_system.domain.enums.AuditEntityType;
 import com.siva.expense_approval_system.domain.model.User;
 import com.siva.expense_approval_system.domain.repository.UserRepository;
 import com.siva.expense_approval_system.infrastructure.security.CurrentUserService;
@@ -20,19 +24,31 @@ public class UserServiceImpl implements UserService{
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final CurrentUserService currentUserService;
+    private final AuditService auditService;
     
     public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder,
-            CurrentUserService currentUserService){
+            CurrentUserService currentUserService,AuditService auditService){
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.currentUserService = currentUserService;
+        this.auditService = auditService;
     }
 
     @Override
     public User createUser(@NonNull User user) {
         user.setTenant(currentUserService.getCurrentTenant());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return userRepository.save(Objects.requireNonNull(user, "User must not be null"));
+        User savedUser = userRepository.save(Objects.requireNonNull(user, "User must not be null"));
+
+        auditService.log(
+    user.getTenant(),
+    AuditActionType.CREATE,
+    AuditEntityType.USER,
+    savedUser.getId(),
+    "Created employee"
+);
+
+      return savedUser;
     }
 
     @Override

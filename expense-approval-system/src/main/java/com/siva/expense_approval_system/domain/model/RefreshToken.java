@@ -20,7 +20,7 @@ public class RefreshToken {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long Id;
+    private Long id;
     
     @ManyToOne
     @JoinColumn(name ="user_id",nullable = false)
@@ -44,7 +44,7 @@ public class RefreshToken {
 
     public RefreshToken(Long id, User user, String tokenHash, LocalDateTime expiresAt, Boolean revoked,
             LocalDateTime createdAt) {
-        Id = id;
+        this.id = id;
         this.user = user;
         this.tokenHash = tokenHash;
         this.expiresAt = expiresAt;
@@ -54,12 +54,12 @@ public class RefreshToken {
 
 
     public Long getId() {
-        return Id;
+        return id;
     }
 
 
     public void setId(Long id) {
-        Id = id;
+        this.id = id;
     }
 
 

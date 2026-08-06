@@ -6,6 +6,9 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import com.siva.expense_approval_system.application.service.ApprovalChainService;
+import com.siva.expense_approval_system.application.service.AuditService;
+import com.siva.expense_approval_system.domain.enums.AuditActionType;
+import com.siva.expense_approval_system.domain.enums.AuditEntityType;
 import com.siva.expense_approval_system.domain.model.ApprovalChain;
 import com.siva.expense_approval_system.domain.repository.ApprovalChainRepository;
 import com.siva.expense_approval_system.infrastructure.security.CurrentUserService;
@@ -15,20 +18,32 @@ public class ApprovalChainServiceImpl implements ApprovalChainService {
     
       private final ApprovalChainRepository approvalChainRepository;
       private final CurrentUserService currentUserService;
-
+      private final AuditService auditService;
       public ApprovalChainServiceImpl(ApprovalChainRepository approvalChainRepository,
-            CurrentUserService currentUserService){
+            CurrentUserService currentUserService,AuditService auditService){
 
         this.approvalChainRepository = approvalChainRepository;
         this.currentUserService = currentUserService;
+        this.auditService = auditService;
       }
 
       @Override
       public ApprovalChain createApprovalChain(ApprovalChain approvalChain) {
         validateAmountRange(approvalChain);
         approvalChain.setTenant(currentUserService.getCurrentTenant());
-        return approvalChainRepository.save(approvalChain);
+        ApprovalChain saveApprovalChain = approvalChainRepository.save(approvalChain);
+
+        auditService.log(
+    approvalChain.getTenant(),
+    AuditActionType.CREATE,
+    AuditEntityType.APPROVAL_CHAIN,
+    approvalChain.getId(),
+    "Workflow Created"
+);
+
+   return saveApprovalChain;
       }
+
 
       @Override
       public ApprovalChain getApprovalChainById(Long id) {
