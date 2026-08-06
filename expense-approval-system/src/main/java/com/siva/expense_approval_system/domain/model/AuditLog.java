@@ -30,6 +30,7 @@ public class AuditLog {
     @JoinColumn(name = "tenant_id",nullable = false)
     private Tenant tenant;
     
+
     @Column(name = "actor_id",nullable = false)
     private Long actorId;
     
@@ -45,21 +46,21 @@ public class AuditLog {
     private Long entityId;
     
     @Column(columnDefinition = "TEXT")
-    private String metaData;
+    private String metadata;
     
     @Column(name ="created_at",nullable = false)
     private LocalDateTime createdAt;
 
 
     public AuditLog(Long id, Tenant tenant, Long actorId, AuditActionType actionType, AuditEntityType entityType, Long entityId,
-            String metaData, LocalDateTime createdAt) {
+            String metadata, LocalDateTime createdAt) {
         Id = id;
         this.tenant = tenant;
         this.actorId = actorId;
         this.actionType = actionType;
         this.entityType = entityType;
         this.entityId = entityId;
-        this.metaData = metaData;
+        this.metadata = metadata;
         this.createdAt = createdAt;
     }
 
@@ -138,13 +139,13 @@ public class AuditLog {
 
 
     public String getMetaData() {
-        return metaData;
+        return metadata;
     }
 
 
 
     public void setMetaData(String metaData) {
-        this.metaData = metaData;
+        this.metadata = metaData;
     }
 
 
