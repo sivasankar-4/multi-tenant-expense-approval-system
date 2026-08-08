@@ -11,6 +11,7 @@ import jakarta.validation.Valid;
 
 import com.siva.expense_approval_system.api.dto.request.LoginRequest;
 import com.siva.expense_approval_system.api.dto.response.LoginResponse;
+import com.siva.expense_approval_system.api.dto.response.RefreshTokenRequest;
 import com.siva.expense_approval_system.application.service.AuthService;
 
 @RestController
@@ -28,4 +29,20 @@ public class AuthController {
     public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest request){
         return ResponseEntity.ok(authService.login(request));
     }
+
+       
+    @PostMapping("/refresh")
+    @PreAuthorize("permitAll()")
+    public ResponseEntity<LoginResponse> refreshToken(@RequestBody @Valid RefreshTokenRequest request) {
+
+        return ResponseEntity.ok(authService.refreshToken(request));
+}
+
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout(@Valid @RequestBody RefreshTokenRequest request) {
+
+    authService.logout(request);
+
+    return ResponseEntity.ok().build();
+   }
 }

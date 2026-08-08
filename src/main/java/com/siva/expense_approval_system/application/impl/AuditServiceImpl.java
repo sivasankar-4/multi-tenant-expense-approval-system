@@ -38,9 +38,8 @@ public class AuditServiceImpl implements AuditService{
              AuditLog audit = new AuditLog();
         User currentUser = currentUserService.getCurrentUser();
 
-
         audit.setTenant(tenant);
-        audit.setActorId(currentUser.getId());
+        audit.setActorId(currentUser != null ? currentUser.getId() : (entityType == AuditEntityType.USER ? entityId : null));
         audit.setActionType(actionType);
         audit.setEntityType(entityType);
         audit.setEntityId(entityId);

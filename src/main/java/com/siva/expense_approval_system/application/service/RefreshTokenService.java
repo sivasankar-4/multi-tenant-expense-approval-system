@@ -13,5 +13,7 @@ public interface RefreshTokenService {
 
     Optional<RefreshToken> findByToken(String token);
 
+    void revoke (RefreshToken refreshToken);
+
     void deleteByUser(User user);
 }

@@ -11,15 +11,11 @@ public class CurrentUserServiceImpl implements CurrentUserService{
 
     @Override
     public User getCurrentUser() {
-
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-         System.out.println(authentication);
-        System.out.println(authentication.getPrincipal());
-
-        CustomUserDetails currentuser = (CustomUserDetails) authentication.getPrincipal();
-         
-        return currentuser.getuser();
+        if (authentication != null && authentication.getPrincipal() instanceof CustomUserDetails userDetails) {
+            return userDetails.getuser();
+        }
+        return null;
     }
 
     @Override

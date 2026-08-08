@@ -8,16 +8,22 @@ import org.springframework.stereotype.Service;
 
 import com.siva.expense_approval_system.api.dto.request.LoginRequest;
 import com.siva.expense_approval_system.api.dto.response.LoginResponse;
+import com.siva.expense_approval_system.api.dto.response.RefreshTokenRequest;
+import com.siva.expense_approval_system.application.service.AuditService;
 import com.siva.expense_approval_system.application.service.AuthService;
 import com.siva.expense_approval_system.application.service.RefreshTokenService;
+import com.siva.expense_approval_system.domain.enums.AuditActionType;
+import com.siva.expense_approval_system.domain.enums.AuditEntityType;
+import com.siva.expense_approval_system.domain.model.RefreshToken;
 import com.siva.expense_approval_system.domain.model.User;
 import com.siva.expense_approval_system.domain.repository.UserRepository;
 import com.siva.expense_approval_system.infrastructure.security.JwtService;
 
+import jakarta.transaction.Transactional;
+
 
 
 @Service
-
 public class AuthServiceImpl implements AuthService{
     
      
@@ -26,16 +32,17 @@ public class AuthServiceImpl implements AuthService{
     private final RefreshTokenService refreshTokenService;
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
-    
+    private final AuditService auditService;
     
 
      public AuthServiceImpl(AuthenticationManager authenticationManager, UserRepository userRepository,
-            RefreshTokenService refreshTokenService, JwtService jwtService, PasswordEncoder passwordEncoder) {
+            RefreshTokenService refreshTokenService, JwtService jwtService, PasswordEncoder passwordEncoder,AuditService auditService) {
         this.authenticationManager = authenticationManager;
         this.userRepository = userRepository;
         this.refreshTokenService = refreshTokenService;
         this.jwtService = jwtService;
         this.passwordEncoder = passwordEncoder;
+        this.auditService = auditService;
     }
 
 
@@ -70,5 +77,60 @@ public class AuthServiceImpl implements AuthService{
             "Bearer"
     );
     }
+
+@Override
+@Transactional
+public LoginResponse refreshToken(RefreshTokenRequest request) {
+
+    RefreshToken refreshToken = refreshTokenService
+            .findByToken(request.getRefreshToken())
+            .orElseThrow(() ->
+                    new RuntimeException("Invalid refresh token"));
+
+    refreshToken = refreshTokenService.verifyExpiration(refreshToken);
+
+    User user = refreshToken.getUser();
+
+    String accessToken = jwtService.generateToken(user);
+
+    refreshTokenService.revoke(refreshToken);
+
+    String newRefreshToken =
+            refreshTokenService.createRefreshToken(user);
+
+    auditService.log(
+            user.getTenant(),
+            AuditActionType.LOGIN,
+            AuditEntityType.USER,
+            user.getId(),
+            "Refresh token rotated"
+    );
+
+    return new LoginResponse(accessToken,newRefreshToken,"Bearer");
+}
+
+@Override
+@Transactional
+public void logout(RefreshTokenRequest request) {
+
+    RefreshToken refreshToken = refreshTokenService
+            .findByToken(request.getRefreshToken())
+            .orElseThrow(() ->
+                    new RuntimeException("Invalid refresh token"));
+
+    refreshToken = refreshTokenService.verifyExpiration(refreshToken);
+
+    refreshTokenService.revoke(refreshToken);
+
+    User user = refreshToken.getUser();
+
+    auditService.log(
+            user.getTenant(),
+            AuditActionType.LOGOUT,
+            AuditEntityType.USER,
+            user.getId(),
+            "User logout"
+    );
+}
 
 }
