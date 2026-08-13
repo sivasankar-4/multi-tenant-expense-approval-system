@@ -59,6 +59,13 @@ public class ExpenseServiceImpl implements ExpenseService{
      @Override
      public Expense submitExpense(Expense expense){
 
+      if (!Objects.equals(
+              expense.getTenant().getId(),
+              expense.getSubmittedBy().getTenant().getId())) {
+          throw new IllegalArgumentException(
+              "User does not belong to the expense's tenant.");
+      }
+
       if(expense.getAmount().compareTo(BigDecimal.ZERO) <= 0){
           throw new IllegalArgumentException("Amount must greater than Zero");
       }
