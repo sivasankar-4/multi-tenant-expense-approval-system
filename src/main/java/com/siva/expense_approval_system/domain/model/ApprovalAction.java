@@ -18,7 +18,7 @@ import jakarta.persistence.UniqueConstraint;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "approvalAction", uniqueConstraints = @UniqueConstraint(
+@Table(name = "approval_action", uniqueConstraints = @UniqueConstraint(
         name = "uk_approval_action_expense_step",
         columnNames = {"expense_id", "workflow_step"}))
 @NoArgsConstructor
