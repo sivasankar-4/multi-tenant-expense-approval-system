@@ -13,7 +13,7 @@ import jakarta.persistence.Table;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "Refresh_token")
+@Table(name = "refresh_token")
 @NoArgsConstructor
 public class RefreshToken {
     
