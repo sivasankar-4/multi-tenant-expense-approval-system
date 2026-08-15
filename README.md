@@ -307,7 +307,7 @@ A protected request follows this general flow:
 Keep this table synchronized with the actual controller mappings in the repository.
 
 ```
-Area	Example
+Area	             Example
 Authentication	POST /api/auth/login
 Authentication	POST /api/auth/refresh
 Tenants	        POST /tenants
