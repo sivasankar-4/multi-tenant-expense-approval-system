@@ -302,6 +302,19 @@ A protected request follows this general flow:
 
 ```
 
+📡 API Overview
+
+Keep this table synchronized with the actual controller mappings in the repository.
+
+```
+Area	Example
+Authentication	POST /api/auth/login
+Authentication	POST /api/auth/refresh
+Tenants	        POST /tenants
+Users	          POST /users
+Expenses        POST /expenses
+Approval Chains	POST /approvalChains
+```
 
 ## 🛠️ Tech Stack
 
@@ -358,3 +371,8 @@ The tenant is derived from the authenticated user's context instead of trusting 
 Approval history
 
 Approval actions are persisted so workflow execution remains auditable rather than relying only on a mutable approval-state field.
+
+---
+👨‍💻 Author
+
+Siva Sankar
