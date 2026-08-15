@@ -35,3 +35,24 @@ Each company can have:
 
 ---
 
+
+# ✨ Key Features
+
+## 🔐 Authentication & Authorization
+
+- JWT-based authentication
+- Access token + refresh token flow
+- BCrypt password hashing
+- Role-based access control
+- Method-level authorization with Spring Security
+- Role-aware approval actions
+- `401 Unauthorized` for unauthenticated access
+- `403 Forbidden` for authenticated users without sufficient permissions
+
+Supported roles:
+
+```text
+EMPLOYEE
+MANAGER
+FINANCE_ADMIN
+
