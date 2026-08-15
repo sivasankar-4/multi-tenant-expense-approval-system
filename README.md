@@ -57,7 +57,7 @@ FINANCE_ADMIN
 
 ---
 
-🏢 Multi-Tenancy
+## 🏢 Multi-Tenancy
 
 The application uses a shared-database multi-tenant model.
 
@@ -92,7 +92,7 @@ Tenant A expense
 This verifies that cross-tenant access is rejected in the deployed application.
 
 ---
-💰 Expense Management
+##💰 Expense Management
 
 Employees can submit expenses containing information such as:
 
@@ -125,7 +125,7 @@ REJECTED
 
 ---
 
-🔄 Configurable Approval Workflows
+##🔄 Configurable Approval Workflows
 
 Approval rules are stored in the database instead of being hard-coded into the service layer.
 
@@ -154,7 +154,7 @@ FINANCE_ADMIN
 
 This allows the approval process to change according to the expense amount.
 ---
-🧾 Example End-to-End Workflow
+##🧾 Example End-to-End Workflow
 
 A ₹60,000 expense follows a two-step approval process.
 
