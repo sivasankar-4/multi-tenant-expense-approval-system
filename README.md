@@ -333,7 +333,7 @@ Approval Chains	POST /approvalChains
 | Railway         | Deployment                     |
 
 ---
-🧪 Production Validation
+### 🧪 Production Validation
 
 The deployed application was manually verified through real API flows:
 
@@ -373,6 +373,33 @@ Approval history
 Approval actions are persisted so workflow execution remains auditable rather than relying only on a mutable approval-state field.
 
 ---
+
+## Run Locally
+
+### Prerequisites
+
+- Java 21+
+- MySQL
+- Maven
+
+### Setup
+
+1. Clone the repository:
+
+```bash
+git clone https://github.com/sivasankar-4/multi-tenant-expense-approval-system.git
+cd multi-tenant-expense-approval-system
+```
+### Create a MySQL database:
+CREATE DATABASE expense_approval_test;
+Configure your local database credentials and JWT secret using environment variables or a local Spring profile.
+### Run the application:
+.\mvnw.cmd spring-boot:run
+
+Flyway automatically applies the database migrations on startup.
+
+---
+
 👨‍💻 Author
 
 Siva Sankar
