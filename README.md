@@ -220,4 +220,97 @@ Timestamp
 Metadata
 
 This provides a persistent history of important business operations.
+---
+## 🏗️ Architecture
+
+The project is organized into separate layers for API handling, business logic, domain models, persistence, and infrastructure concerns.
+
+                         Client
+                    Postman / Frontend
+                            │
+                            ▼
+                 ┌─────────────────────┐
+                 │   Spring Security   │
+                 │  JWT + RBAC + CORS  │
+                 └──────────┬──────────┘
+                            │
+                            ▼
+                 ┌─────────────────────┐
+                 │    API / Controllers│
+                 │  DTOs + Validation  │
+                 └──────────┬──────────┘
+                            │
+                            ▼
+                 ┌─────────────────────┐
+                 │ Application Layer   │
+                 │ Business Services   │
+                 └──────────┬──────────┘
+                            │
+                ┌───────────┴───────────┐
+                │                       │
+                ▼                       ▼
+        ┌───────────────┐      ┌────────────────┐
+        │ Domain Models │      │ Repositories   │
+        │ Business Data │      │ Spring Data JPA│
+        └───────────────┘      └───────┬────────┘
+                                      │
+                                      ▼
+                               ┌─────────────┐
+                               │    MySQL    │
+                               └─────────────┘
+---
+## 🔒 Request Security Flow
+
+A protected request follows this general flow:
+
+HTTP Request
+     ↓
+JWT Authentication Filter
+     ↓
+Validate JWT
+     ↓
+Load User
+     ↓
+Create Authentication
+     ↓
+SecurityContext
+     ↓
+Role / Method Authorization
+     ↓
+Tenant-aware Business Logic
+     ↓
+Repository
+     ↓
+MySQL
+
+--
+
+## 🗃️ Data Model
+
+Core entities:
+
+Tenant
+User
+Expense
+ApprovalChain
+ApprovalAction
+RefreshToken
+AuditLog
+
+Simplified relationships:
+
+Tenant
+ ├── User
+ │    ├── Expense
+ │    ├── ApprovalAction
+ │    └── RefreshToken
+ │
+ ├── Expense
+ │    └── ApprovalAction
+ │
+ ├── ApprovalChain
+ │
+ └── AuditLog
+
+The database also contains tenant-aware foreign-key constraints to strengthen data integrity.
 
