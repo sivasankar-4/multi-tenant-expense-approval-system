@@ -319,4 +319,42 @@ A protected request follows this general flow:
 | Postman         | API testing                    |
 | Railway         | Deployment                     |
 
+---
+🧪 Production Validation
 
+The deployed application was manually verified through real API flows:
+
+✅ Login
+✅ JWT-protected API requests
+✅ Refresh-token flow
+✅ Employee expense creation
+✅ Manager approval
+✅ Finance Admin approval
+✅ Multi-step approval workflow
+✅ Wrong approval role → 403
+✅ Cross-tenant access → 403
+✅ Audit records created
+✅ Flyway migration applied successfully
+✅ Existing production data preserved
+
+---
+### 🧠 Key Design Decisions
+Shared database multi-tenancy
+
+Chosen for simpler deployment and schema management at the current scale.
+
+Trade-off: tenant isolation must be consistently enforced by the application and database.
+
+Flyway + ddl-auto=validate
+
+Flyway owns schema changes through versioned migrations.
+
+Hibernate validates the schema instead of modifying production tables automatically.
+
+Tenant context from authentication
+
+The tenant is derived from the authenticated user's context instead of trusting arbitrary tenant IDs from the client.
+
+Approval history
+
+Approval actions are persisted so workflow execution remains auditable rather than relying only on a mutable approval-state field.
