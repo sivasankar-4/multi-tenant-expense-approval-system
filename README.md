@@ -263,25 +263,25 @@ The project is organized into separate layers for API handling, business logic, 
 
 A protected request follows this general flow:
 
-               HTTP Request
-             ↓
-       JWT Authentication Filter
-     ↓
-             Validate JWT
-     ↓
-               Load User
-     ↓
-          Create Authentication
-     ↓
-           SecurityContext
-     ↓
-          Role / Method Authorization
-     ↓
-           Tenant-aware Business Logic
-     ↓
-              Repository
-     ↓
-                MySQL
+                         HTTP Request
+                              ↓
+                     JWT Authentication Filter
+                              ↓
+                         Validate JWT
+                              ↓
+                           Load User
+                               ↓
+                      Create Authentication
+                               ↓
+                          SecurityContext
+                               ↓
+                     Role / Method Authorization
+                               ↓
+                      Tenant-aware Business Logic
+                                ↓
+                             Repository
+                                ↓
+                              MySQL
 
 ---
 
@@ -289,7 +289,7 @@ A protected request follows this general flow:
 
 Core entities:
 
-Tenant
+#### Tenant
 User
 Expense
 ApprovalChain
