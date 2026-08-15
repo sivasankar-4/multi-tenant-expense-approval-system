@@ -89,3 +89,34 @@ Tenant A expense
 403 Forbidden
 
 This verifies that cross-tenant access is rejected in the deployed application.
+
+💰 Expense Management
+
+Employees can submit expenses containing information such as:
+
+Amount
+Currency
+Category
+Description
+
+The expense belongs to:
+
+Tenant
+   ↓
+Submitting User
+   ↓
+Expense
+
+Expense lifecycle:
+
+PENDING
+   ↓
+IN_REVIEW
+   ↓
+APPROVED
+
+or:
+
+PENDING / IN_REVIEW
+   ↓
+REJECTED
