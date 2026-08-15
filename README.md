@@ -22,6 +22,9 @@ In many organizations, expense approvals are handled through email,
 spreadsheets or informal processes. This makes approval routing,
 accountability and auditability difficult.
 
+This project models a SaaS-style expense approval system where each
+company operates as an isolated tenant with configurable approval rules.
+
 Each company can have:
 
 - Its own users
@@ -31,7 +34,4 @@ Each company can have:
 - Its own audit records
 
 ---
-
-This project models a SaaS-style expense approval system where each
-company operates as an isolated tenant with configurable approval rules.
 
