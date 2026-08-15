@@ -56,3 +56,36 @@ EMPLOYEE
 MANAGER
 FINANCE_ADMIN
 
+🏢 Multi-Tenancy
+
+The application uses a shared-database multi-tenant model.
+
+Each user belongs to exactly one tenant, and tenant context is derived from the authenticated user rather than being blindly trusted from the request payload.
+
+Conceptually:
+
+                         Application
+                              │
+              ┌───────────────┴───────────────┐
+              │                               │
+           Tenant A                        Tenant B
+              │                               │
+       ┌──────┼──────┐                 ┌──────┼──────┐
+       │      │      │                 │      │      │
+      Users Expenses Approvals        Users Expenses Approvals
+
+Tenant isolation is enforced through application-level checks and database-level integrity constraints.
+
+Production tenant-isolation verification
+
+A user belonging to one tenant was deliberately used to access an expense belonging to another tenant.
+
+Result:
+
+Tenant B user
+     ↓
+Tenant A expense
+     ↓
+403 Forbidden
+
+This verifies that cross-tenant access is rejected in the deployed application.
