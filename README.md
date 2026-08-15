@@ -297,6 +297,7 @@ Core entities:
 #### RefreshToken
 #### AuditLog
 
+### Simplified relationships:
 ```
  Tenant
  ├── User
