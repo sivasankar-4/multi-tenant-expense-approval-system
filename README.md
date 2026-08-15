@@ -338,7 +338,7 @@ Approval Chains	POST /approvalChains
 ### 🧪 Production Validation
 
 The deployed application was manually verified through real API flows:
-
+```
 ✅ Login
 ✅ JWT-protected API requests
 ✅ Refresh-token flow
@@ -351,7 +351,7 @@ The deployed application was manually verified through real API flows:
 ✅ Audit records created
 ✅ Flyway migration applied successfully
 ✅ Existing production data preserved
-
+```
 ---
 ### 🧠 Key Design Decisions
 Shared database multi-tenancy
