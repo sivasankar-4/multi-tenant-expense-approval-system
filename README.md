@@ -122,3 +122,36 @@ or:
 PENDING / IN_REVIEW
    ↓
 REJECTED
+
+---
+
+🔄 Configurable Approval Workflows
+
+Approval rules are stored in the database instead of being hard-coded into the service layer.
+
+An approval chain is defined using:
+
+minAmount
+maxAmount
+stepOrder
+approverRole
+
+Example production configuration:
+
+₹0 – ₹10,000
+    ↓
+MANAGER
+
+
+₹10,000.01 – ₹50,000
+    ↓
+MANAGER
+
+
+₹50,000.01 – ₹90,000
+    ↓
+MANAGER
+    ↓
+FINANCE_ADMIN
+
+This allows the approval process to change according to the expense amount.
