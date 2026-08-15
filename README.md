@@ -142,11 +142,9 @@ Example production configuration:
     ↓
 MANAGER
 
-
 ₹10,000.01 – ₹50,000
     ↓
 MANAGER
-
 
 ₹50,000.01 – ₹90,000
     ↓
