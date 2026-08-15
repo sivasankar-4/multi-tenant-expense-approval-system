@@ -90,6 +90,7 @@ Tenant A expense
 
 This verifies that cross-tenant access is rejected in the deployed application.
 
+---
 💰 Expense Management
 
 Employees can submit expenses containing information such as:
