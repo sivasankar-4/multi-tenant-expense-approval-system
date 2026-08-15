@@ -62,11 +62,6 @@ public class Expense {
      @Column(nullable = false)
      private Long version;
 
-    // Legacy schema column retained for backward-compatible inserts. Workflow progress is derived from ApprovalAction.
-    @Deprecated
-    @Column(name = "current_approval_step", nullable = false)
-    private Integer legacyApprovalStep;
-
     @Column(name = "created_at", nullable = false)                                    
     private LocalDateTime createdAt;                
        
@@ -148,10 +143,6 @@ public class Expense {
 
     public void setStatus(ExpenseStatus status) {
         this.status = status;
-    }
-
-    public void initializeLegacyApprovalStep() {
-        this.legacyApprovalStep = 0;
     }
 
     public LocalDateTime getCreatedAt() {

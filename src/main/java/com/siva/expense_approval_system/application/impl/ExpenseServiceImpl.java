@@ -53,7 +53,6 @@ public class ExpenseServiceImpl implements ExpenseService{
      @Transactional
      public Expense createExpense(Expense expense){
         expense.setStatus(ExpenseStatus.PENDING);
-        expense.initializeLegacyApprovalStep();
         return expenseRepository.save(expense);
      }
      @Override
@@ -83,7 +82,6 @@ public class ExpenseServiceImpl implements ExpenseService{
                       .toList());
 
       expense.setStatus(ExpenseStatus.PENDING);
-      expense.initializeLegacyApprovalStep();
       Expense savedExpense = expenseRepository.save(expense);
 
   auditService.log(
