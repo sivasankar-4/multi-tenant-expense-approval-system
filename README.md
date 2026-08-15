@@ -153,3 +153,37 @@ MANAGER
 FINANCE_ADMIN
 
 This allows the approval process to change according to the expense amount.
+---
+🧾 Example End-to-End Workflow
+
+A ₹60,000 expense follows a two-step approval process.
+
+EMPLOYEE
+   │
+   │ Submit ₹60,000 expense
+   ▼
+PENDING
+   │
+   ▼
+MANAGER
+   │
+   │ APPROVE
+   ▼
+IN_REVIEW
+   │
+   ▼
+FINANCE_ADMIN
+   │
+   │ APPROVE
+   ▼
+APPROVED
+
+The system also prevents approvers from skipping workflow stages.
+
+For example, when the current required role is FINANCE_ADMIN:
+
+MANAGER
+   ↓
+403 Forbidden
+
+while the appropriate FINANCE_ADMIN can perform the approval.
