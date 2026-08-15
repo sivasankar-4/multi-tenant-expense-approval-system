@@ -51,10 +51,11 @@ Each company can have:
 
 Supported roles:
 
-```text
 EMPLOYEE
 MANAGER
 FINANCE_ADMIN
+
+---
 
 🏢 Multi-Tenancy
 
