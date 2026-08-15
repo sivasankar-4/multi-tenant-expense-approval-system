@@ -16,3 +16,12 @@ Built with Java, Spring Boot, Spring Security, MySQL, Flyway and JWT.
 
 **Live API:** https://multi-tenant-expense-approval-system-production.up.railway.app/
 
+## Problem
+
+In many organizations, expense approvals are handled through email,
+spreadsheets or informal processes. This makes approval routing,
+accountability and auditability difficult.
+
+This project models a SaaS-style expense approval system where each
+company operates as an isolated tenant with configurable approval rules.
+
