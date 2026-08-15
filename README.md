@@ -285,18 +285,6 @@ A protected request follows this general flow:
 
 ---
 
-## 🗃️ Data Model
-
-Core entities:
-
-#### Tenant
-#### User
-#### Expense
-#### ApprovalChain
-#### ApprovalAction
-#### RefreshToken
-#### AuditLog
-
 ### Simplified relationships:
 ```
  Tenant
