@@ -84,9 +84,9 @@ A user belonging to one tenant was deliberately used to access an expense belong
 Result:
 
 Tenant B user
-     ↓
+     ->
 Tenant A expense
-     ↓
+     ->
 403 Forbidden
 
 This verifies that cross-tenant access is rejected in the deployed application.
@@ -104,23 +104,23 @@ Description
 The expense belongs to:
 
 Tenant
-   ↓
+   ->
 Submitting User
-   ↓
+   ->
 Expense
 
 Expense lifecycle:
 
 PENDING
-   ↓
+   ->
 IN_REVIEW
-   ↓
+   ->
 APPROVED
 
 or:
 
 PENDING / IN_REVIEW
-   ↓
+   ->
 REJECTED
 
 ---
@@ -138,6 +138,7 @@ approverRole
 
 Example production configuration:
 
+```
 ₹0 – ₹10,000
     ↓
 MANAGER
@@ -151,8 +152,9 @@ MANAGER
 MANAGER
     ↓
 FINANCE_ADMIN
-
+```
 This allows the approval process to change according to the expense amount.
+
 ---
 ## 🧾 Example End-to-End Workflow
 
