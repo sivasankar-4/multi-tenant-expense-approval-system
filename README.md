@@ -290,16 +290,15 @@ A protected request follows this general flow:
 Core entities:
 
 #### Tenant
-User
-Expense
-ApprovalChain
-ApprovalAction
-RefreshToken
-AuditLog
+#### User
+#### Expense
+#### ApprovalChain
+#### ApprovalAction
+#### RefreshToken
+#### AuditLog
 
-Simplified relationships:
-
-Tenant
+```
+ Tenant
  ├── User
  │    ├── Expense
  │    ├── ApprovalAction
