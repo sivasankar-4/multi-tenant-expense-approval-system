@@ -312,5 +312,23 @@ Core entities:
  │
  └── AuditLog
 
-The database also contains tenant-aware foreign-key constraints to strengthen data integrity.
+```
+
+
+## 🛠️ Tech Stack
+
+| Technology      | Purpose                        |
+| --------------- | ------------------------------ |
+| Java            | Backend                        |
+| Spring Boot     | Application framework          |
+| Spring Security | Authentication & authorization |
+| JWT             | API authentication             |
+| Spring Data JPA | Data access                    |
+| Hibernate       | ORM                            |
+| MySQL           | Database                       |
+| Flyway          | Database migrations            |
+| Maven           | Build                          |
+| Postman         | API testing                    |
+| Railway         | Deployment                     |
+
 
