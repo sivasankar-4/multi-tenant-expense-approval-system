@@ -77,4 +77,32 @@ public class JwtService {
 
         return extractClaim(token , Claims::getExpiration);
     }
+    
+    @Value("${security.jwt.reset-expiration}")
+    private long resetTokenExpiration;
+    
+    public String generateResetToken(User user) {
+        return Jwts.builder()
+                .subject(user.getEmail())
+                .claim("purpose","PASSWORD_RESET")
+                .issuedAt(new Date())
+                .expiration(new Date(System.currentTimeMillis() + resetTokenExpiration))
+                .signWith(getSigningKey())
+                .compact();
+    }
+
+    public boolean isPasswordResetTokenValid(String token){
+
+         try{
+
+             Claims claims = extractAllClaims(token);
+
+             String purpose = claims.get("purpose" , String.class);
+
+             return "PASSWORD_RESET".equals(purpose)
+                             && !claims.getExpiration().before(new Date());
+         }catch (Exception e){
+            return false;
+         }
+    }
 }
