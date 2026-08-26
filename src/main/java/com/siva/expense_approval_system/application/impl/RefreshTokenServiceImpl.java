@@ -8,7 +8,9 @@ import java.util.HexFormat;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.siva.expense_approval_system.application.service.RefreshTokenService;
 import com.siva.expense_approval_system.domain.model.RefreshToken;
@@ -55,11 +57,11 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
 
         if (refreshToken.getExpiresAt().isBefore(LocalDateTime.now())) {
             refreshTokenRepository.delete(refreshToken);
-            throw new RuntimeException("Refresh token has expired");
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Refresh token has expired");
         }
 
         if (Boolean.TRUE.equals(refreshToken.getRevoked())) {
-            throw new RuntimeException("Refresh token has been revoked");
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Refresh token has been revoked");
         }
 
         return refreshToken;
