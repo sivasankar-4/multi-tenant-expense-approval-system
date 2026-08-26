@@ -100,10 +100,15 @@ public class SecurityConfig {
             .authenticationEntryPoint(authenticationEntryPoint)
             .accessDeniedHandler(accessDeniedHandler))
             .authorizeHttpRequests(auth -> auth
-            .requestMatchers("/api/auth/login", "/api/auth/refresh", "/api/auth/logout").permitAll()
+            .requestMatchers("/api/auth/login", "/api/auth/refresh", 
+                               "/api/auth/logout",
+                               "/api/auth/signup",
+                               "/api/auth/forgot-password",
+                               "/api/auth/verify-otp",
+                                "/api/auth/reset-password").permitAll()
             .anyRequest().authenticated())
-        .authenticationProvider(authenticationProvider())
-        .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+            .authenticationProvider(authenticationProvider())
+            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
     return http.build();
   }
