@@ -14,11 +14,15 @@ Built with Java, Spring Boot, Spring Security, MySQL, Flyway and JWT.
 - 🗄️ Versioned database migrations with Flyway
 - ☁️ Deployed on Railway
 
+---
 ### Demo Link
 
 https://expense-approval-system-frontend-roan.vercel.app/
 
-**Live API:** https://multi-tenant-expense-approval-system-production.up.railway.app/
+---
+
+**Live API:** 
+https://multi-tenant-expense-approval-system-production.up.railway.app/
 
 > The deployed backend is secured with Spring Security. Opening the base URL
 > without authentication may return `401 Unauthorized`. Use the documented
